@@ -1,8 +1,8 @@
 # Pesa SDK
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/openpesa/pesa.svg?style=flat-square)](https://packagist.org/packages/openpesa/pesa)
-[![Build Status](https://img.shields.io/travis/openpesa/pesa/master.svg?style=flat-square)](https://travis-ci.org/openpesa/pesa)
-[![Quality Score](https://img.shields.io/scrutinizer/g/openpesa/pesa.svg?style=flat-square)](https://scrutinizer-ci.com/g/openpesa/pesa)
+[![Build Status](https://img.shields.io/travis/openpesa/php-pesa/master.svg?style=flat-square)](https://travis-ci.org/openpesa/php-pesa)
+[![Quality Score](https://img.shields.io/scrutinizer/g/openpesa/php-pesa.svg?style=flat-square)](https://scrutinizer-ci.com/g/openpesa/pesa)
 [![Total Downloads](https://img.shields.io/packagist/dt/openpesa/pesa.svg?style=flat-square)](https://packagist.org/packages/openpesa/pesa)
 
 This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
