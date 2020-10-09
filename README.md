@@ -54,6 +54,7 @@ If you discover any security related issues, please email alphaolomi@gmail.com i
 ## Credits
 
 - [Alpha Olomi](https://github.com/openpesa)
+- [Ley](https://github.com/leyluj)
 - [All Contributors](../../contributors)
 
 ## License
