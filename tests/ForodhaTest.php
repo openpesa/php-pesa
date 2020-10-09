@@ -2,6 +2,7 @@
 
 namespace Openpesa\SDK\Tests;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Openpesa\SDK\Forodha;
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
@@ -53,6 +54,13 @@ class ForodhaTest extends TestCase
     public function forodha_instantiable()
     {
         $this->assertInstanceOf(Forodha::class, $this->forodha);
+        $this->assertInstanceOf(Forodha::class, new Forodha([
+            'api_key' => Fixture::$apiKey,
+            'public_key' => Fixture::$publicKey,
+            'username' => Fixture::$username,
+            'auth_url' => Fixture::$authUrl,
+            'client_options' => [],
+        ]));
     }
 
     /** @test */
@@ -63,7 +71,7 @@ class ForodhaTest extends TestCase
     }
 
     /** @test
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function forodha_get_session()
     {
@@ -76,7 +84,7 @@ class ForodhaTest extends TestCase
     }
 
     /** @test
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function forodha_transact_c2b()
     {

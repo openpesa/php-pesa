@@ -6,3 +6,4 @@ coverage
 
 .idea
 /examples/http-client.private.env.json
+/examples/my-simple.php
