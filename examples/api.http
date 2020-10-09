@@ -1,0 +1,6 @@
+GET https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/
+Accept: application/json
+Origin: *
+Authorization: Bearer {{token}}
+
+###

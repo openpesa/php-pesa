@@ -1,6 +1,6 @@
 <?php
 
-namespace Openpesa\Pesa\Tests;
+namespace Openpesa\SDK\Tests;
 
 use PHPUnit\Framework\TestCase;
 

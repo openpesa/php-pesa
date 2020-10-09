@@ -3,3 +3,6 @@ composer.lock
 docs
 vendor
 coverage
+
+.idea
+/examples/http-client.private.env.json
