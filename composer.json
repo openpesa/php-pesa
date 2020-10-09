@@ -1,0 +1,42 @@
+{
+    "name": "openpesa/pesa",
+    "description": "pesa",
+    "keywords": [
+        "openpesa",
+        "pesa"
+    ],
+    "homepage": "https://github.com/openpesa/pesa",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Alpha Olomi",
+            "email": "alphaolomi@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Openpesa\\Pesa\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Openpesa\\Pesa\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
