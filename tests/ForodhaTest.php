@@ -21,10 +21,16 @@ class ForodhaTest extends TestCase
         // Create a mock and queue two responses.
         $mock = new MockHandler([
             new Response(200, ['X-Foo' => 'Bar'], json_encode([
+                'output_ResponseCode' => 'INS-0',
+                'output_ResponseDesc' => 'Request processed successfully',
                 'output_SessionID' => 1
             ])),
             new Response(200, ['X-Foo' => 'Bar'], json_encode([
-                'status' => 1
+                'output_ResponseCode' => 'INS-0',
+                'output_ResponseDesc' => 'Request processed successfully',
+                'output_TransactionID' => 2,
+                'output_ConversationID' => 'f1ddae567e6c45e580504764571dbe2f',
+                'output_ThirdPartyConversationID' => 'Narration',
             ])),
             new Response(202, ['Content-Length' => 0]),
             new RequestException('Error Communicating with Server', new Request('GET', 'test'))
@@ -59,12 +65,11 @@ class ForodhaTest extends TestCase
     /** @test
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function forodha_generate_session()
+    public function forodha_get_session()
     {
         // Arrange - Done in the set up method
-
         // Act
-        $response = $this->forodha->generate_session();
+        $response = $this->forodha->get_session();
         // Assert
         $this->assertArrayHasKey('output_SessionID', $response);
         $this->assertEquals(1, $response['output_SessionID']);
@@ -73,14 +78,16 @@ class ForodhaTest extends TestCase
     /** @test
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function forodha_transact()
+    public function forodha_transact_c2b()
     {
         // Arrange - Done in the set up method
-        $this->forodha->generate_session();
-        $result = $this->forodha->transact(Fixture::$data);
+        $session = $this->forodha->get_session()['output_SessionID'];
+        $result = $this->forodha->transact('c2b', Fixture::$data, $session);
         // Act
         // Assert
-        $this->assertArrayHasKey('status', $result);
-        $this->assertEquals(1, $result['status']);
+        $this->assertArrayHasKey('output_ResponseCode', $result);
+        $this->assertArrayHasKey('output_ResponseDesc', $result);
+        $this->assertArrayHasKey('output_ConversationID', $result);
+        $this->assertArrayHasKey('output_ThirdPartyConversationID', $result);
     }
 }
