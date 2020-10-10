@@ -18,19 +18,35 @@ composer require openpesa/pesa
 ## Usage
 
 ``` php
-use Openpesa\SDK\Pesa;
 
-// Set the consumer key and consumer secret as follows
-$username = 'YOUR_USERNAME'; // use 'sandbox' for development in the test environment
-$apiKey   = 'YOUR_API_KEY'; // use your sandbox app API key for development in the test environment
+require '../vendor/autoload.php';
 
-// Get one of the services
-$pesa       = new Pesa($public_key, $apiKey);
+use Openpesa\SDK\Forodha;
+
+// Intiate with keys
+$forodha = new Forodha([
+            'api_key' => 'YOUR_API_KEY', // use 'sandbox' for development in the test environment
+            'public_key' => 'PUBLIC_KEY', // use your sandbox app API key for development in the test environment
+            'client_options' => [], //
+        ]);
+
+// Setup the input amount
+$data = [
+    'input_Amount' => '10000',
+    'input_Country' => 'TZN',
+    'input_Currency' => 'TZS',
+    'input_CustomerMSISDN' => '255766303775',
+    'input_ServiceProviderCode' => '000000',
+    'input_ThirdPartyConversationID' => 'rerekf',
+    'input_TransactionReference' => rand(),
+    'input_PurchasedItemsDesc' => 'Test Two Item'
+];
 
 // Use the service
-$result = $pesa->c2b($invoice_id, $phone_number, $amount, $reference_id, $shortcode);
+$result = $forodha->transact('c2b', $data);
 
-print_r($result);
+var_dump($result);
+
 ```
 
 ### Testing
