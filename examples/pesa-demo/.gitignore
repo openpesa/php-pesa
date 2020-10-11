@@ -1,0 +1,9 @@
+build
+composer.lock
+docs
+vendor
+coverage
+
+.idea
+/examples/http-client.private.env.json
+/examples/my-simple.php
