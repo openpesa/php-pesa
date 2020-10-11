@@ -2,6 +2,7 @@
 
 All notable changes to `pesa` will be documented in this file
 
-## 1.0.0 - 201X-XX-XX
+## 0.0.1 - 2020-10-12
 
 - initial release
+- Supprt for C2B, B2C

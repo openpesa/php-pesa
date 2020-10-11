@@ -21,11 +21,17 @@ class Forodha
      */
     private $rsa;
 
+    const BASE_DOMAIN  = "https://openapi.m-pesa.com/sandbox/";
+    
     const TRANSACT_TYPE = [
         'c2b' => [
             'name' => 'Consumer 2 Business',
-            'url' => 'https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/c2bPayment/singleStage/',
-        ]
+            'url' => "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/c2bPayment/singleStage/",
+        ],
+        'b2c' => [
+            'name' => 'Business 2 Consumer',
+            'url' =>"https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/b2cPayment/singleStage/",
+        ],
     ];
 
     /**

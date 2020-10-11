@@ -90,7 +90,23 @@ class ForodhaTest extends TestCase
     {
         // Arrange - Done in the set up method
         $session = $this->forodha->get_session()['output_SessionID'];
-        $result = $this->forodha->transact('c2b', Fixture::$data, $session);
+        $result = $this->forodha->transact('c2b', Fixture::$data_c2b, $session);
+        // Act
+        // Assert
+        $this->assertArrayHasKey('output_ResponseCode', $result);
+        $this->assertArrayHasKey('output_ResponseDesc', $result);
+        $this->assertArrayHasKey('output_ConversationID', $result);
+        $this->assertArrayHasKey('output_ThirdPartyConversationID', $result);
+    }
+
+     /** @test
+     * @throws GuzzleException
+     */
+    public function forodha_transact_b2c()
+    {
+        // Arrange - Done in the set up method
+        $session = $this->forodha->get_session()['output_SessionID'];
+        $result = $this->forodha->transact('b2c', Fixture::$data_b2c, $session);
         // Act
         // Assert
         $this->assertArrayHasKey('output_ResponseCode', $result);

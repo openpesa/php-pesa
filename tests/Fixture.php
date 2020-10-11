@@ -12,17 +12,31 @@ class Fixture
         'c2b' => [
             'name' => 'Consumer 2 Business',
             'url' => 'https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/c2bPayment/singleStage/',
-        ]
+        ],
+        'b2c' => [
+            'name' => 'Business 2 Consumer',
+            'url' =>"https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/b2cPayment/singleStage/",
+        ],
     ];
-    public static $data = [
+    public static $data_c2b = [
         'input_Amount' => 2030,
         'input_Country' => 'TZN',
         'input_Currency' => 'TZS',
-        'input_CustomerMSISDN' => '255766303775',
+        'input_CustomerMSISDN' => '000000000001',
         'input_ServiceProviderCode' => '000000',
         'input_ThirdPartyConversationID' => 'rerekf',
         'input_TransactionReference' => 'odfdferre',
         'input_PurchasedItemsDesc' => 'Test Two Item'
+    ];
+    public static $data_b2c = [
+        'input_Amount' => 5030,
+        'input_Country' => 'TZN',
+        'input_Currency' => 'TZS',
+        'input_CustomerMSISDN' => '000000000001',
+        'input_ServiceProviderCode' => '000000',
+        'input_ThirdPartyConversationID' => 'asv02e5958774f7ab228d83d0d689761',
+        'input_TransactionReference' => 'odfdferre',
+        'input_PurchasedItemsDesc' => 'Salary payment'
     ];
 
     public static function data()
