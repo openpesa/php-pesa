@@ -99,7 +99,7 @@ class ForodhaTest extends TestCase
         $this->assertArrayHasKey('output_ThirdPartyConversationID', $result);
     }
 
-     /** @test
+    /** @test
      * @throws GuzzleException
      */
     public function forodha_transact_b2c()
@@ -107,6 +107,22 @@ class ForodhaTest extends TestCase
         // Arrange - Done in the set up method
         $session = $this->forodha->get_session()['output_SessionID'];
         $result = $this->forodha->transact('b2c', Fixture::$data_b2c, $session);
+        // Act
+        // Assert
+        $this->assertArrayHasKey('output_ResponseCode', $result);
+        $this->assertArrayHasKey('output_ResponseDesc', $result);
+        $this->assertArrayHasKey('output_ConversationID', $result);
+        $this->assertArrayHasKey('output_ThirdPartyConversationID', $result);
+    }
+
+    /** @test
+     * @throws GuzzleException
+     */
+    public function forodha_transact_reversal()
+    {
+        // Arrange - Done in the set up method
+        $session = $this->forodha->get_session()['output_SessionID'];
+        $result = $this->forodha->transact('rt', Fixture::$data_reversal, $session);
         // Act
         // Assert
         $this->assertArrayHasKey('output_ResponseCode', $result);

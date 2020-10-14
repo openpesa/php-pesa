@@ -22,7 +22,7 @@ class Forodha
     private $rsa;
 
     const BASE_DOMAIN  = "https://openapi.m-pesa.com/sandbox/";
-    
+
     const TRANSACT_TYPE = [
         'c2b' => [
             'name' => 'Consumer 2 Business',
@@ -32,6 +32,10 @@ class Forodha
             'name' => 'Business 2 Consumer',
             'url' =>"https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/b2cPayment/singleStage/",
         ],
+        'rt' => [
+            'name' => 'Reverse Transaction',
+            'url' =>"https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/reversal/",
+        ]
     ];
 
     /**
