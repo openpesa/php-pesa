@@ -15,7 +15,7 @@ class Fixture
         ],
         'b2c' => [
             'name' => 'Business 2 Consumer',
-            'url' =>"https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/b2cPayment/singleStage/",
+            'url' => "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/b2cPayment/singleStage/",
         ],
     ];
     public static $data_c2b = [
@@ -47,10 +47,44 @@ class Fixture
         'input_PurchasedItemsDesc' => 'Salary payment'
     ];
 
+    public static $data_query = [
+        'input_QueryReference' => '000000000000000000001',
+        'input_ServiceProviderCode' => '000000',
+        'input_ThirdPartyConversationID' => 'asv02e5958774f7ba228d83d0d689761',
+        'input_Country' => 'TZN'
+
+    ];
+
+
+    public static $data_ddc = [
+        "input_AgreedTC" => "1",
+        "input_Country" => "TNZ",
+        "input_CustomerMSISDN" => "000000000001",
+        "input_EndRangeOfDays" => "22",
+        "input_ExpiryDate" => "20201126",
+        "input_FirstPaymentDate" => "20200324",
+        "input_Frequency" => "06", // Half Yearly
+        "input_ServiceProviderCode" => "000000",
+        "input_StartRangeOfDays" => "01",
+        "input_ThirdPartyConversationID" => "AAA6d1f9391a0052de0b5334a912jbsj1j2kk",
+        "input_ThirdPartyReference" => "3333"
+    ];
+
+
+    public static $data_ddp = [
+        "input_Amount" => "10",
+        "input_Country" => "TNZ",
+        "input_Currency" => "GHS",
+        "input_CustomerMSISDN" => "000000000001",
+        "input_ServiceProviderCode" => "000000",
+        "input_ThirdPartyConversationID" => "AAA6d1f939c1005v2de053v4912jbasdj1j2kk",
+        "input_ThirdPartyReference" => "5db410b459bd433ca8e5"
+    ];
+
     public static function data()
     {
         return [
-            'input_Amount' => rand(1000,2000),
+            'input_Amount' => rand(1000, 2000),
             'input_Country' => 'TZN',
             'input_Currency' => 'TZS',
             'input_CustomerMSISDN' => '255766303775',

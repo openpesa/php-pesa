@@ -6,9 +6,7 @@ use Openpesa\SDK\Tests\Fixture;
 
 $f = new Forodha([
     'api_key' => '',
-    'public_key' => Fixture::$publicKey,
-    'auth_url' => Fixture::$authUrl,
-    'client_options' => [],
+    'public_key' => Fixture::$publicKey,    
 ]);
 
 
