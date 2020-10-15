@@ -29,7 +29,8 @@
         "ext-openssl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^7.0",
+        "scrutinizer/ocular": "^1.7"
     },
     "autoload": {
         "psr-4": {
