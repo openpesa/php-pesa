@@ -1,21 +1,42 @@
 language: php
 
 php:
-  - 7.1
-  - 7.2
-  - 7.3
+    # - 7.1
+    # - 7.2
+    - 7.3
 
-env:
-  matrix:
-    - COMPOSER_FLAGS="--prefer-lowest"
-    - COMPOSER_FLAGS=""
+# env:
+#   matrix:
+#     - COMPOSER_FLAGS="--prefer-lowest"
+#     - COMPOSER_FLAGS=""
+
+# cache:
+    # directories:
+        # - $HOME/.composer/cache
+
+before_install:
+    - nvm install stable
+    - nvm use stable
 
 before_script:
-  - travis_retry composer self-update
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+    # - travis_retry composer self-update
+    - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+    - cd docs && npm install && cd ..
 
 script:
-  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+    # - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+    - ./vendor/bin/phpunit --coverage-clover coverage.xml
+    - cd docs && npm run build && cd ..
 
-after_script:
-  - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
+
+deploy:
+    provider: pages
+    strategy: git
+    skip_cleanup: true
+    local_dir: ./docs/src/.vuepress/dist
+    token: $GITHUB_TOKEN
+    keep_history: true
+    on:
+        branch: develop

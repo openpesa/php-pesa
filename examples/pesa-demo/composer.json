@@ -1,0 +1,16 @@
+{
+    "name": "openpesa/pesa-demo",
+    "description": "Simple SDK usage",
+    "type": "project",
+    "require": {
+        "php": ">=7.1",
+        "openpesa/pesa": "dev-develop"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alpha Olomi",
+            "email": "alphaolomi@gmail.com"
+        }
+    ]
+}
