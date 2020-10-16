@@ -1,18 +1,19 @@
-# Customer 2 Bussines Transacion Fundamentals
+# Customer 2 Bussines Transaction Fundamentals
 
-## How to transact from customer to bussiness
+## How to transact from customer to business
 
-In this course we will cover what you need to tranct from customer to bussiness using PHP.
+In this course, we will cover what you need to transact from customers to businesses using PHP.
 
 First set up the application in the portal
 
-When building apps on the sandbox application, Using the sandbox api which  allows us to test our application logic without incurring any costs.
+When building apps on the sandbox application, Using the sandbox API which allows us to test our application logic without incurring any costs.
 
 At the bottom left corner of the screen there’s a little phone icon, click it and enter your phone number. This will be the test number you’ll be using and is the number we will send the airtime to. Ensure that you’ve edited the phone number variable we wrote earlier to the phone number you’re using on the simulator.
 
 we will import the required libraries which have already been preinstalled.
 
 Here’s the code that does this:
+
 
 ```php
 require 'vendor/autoload.php';
@@ -21,7 +22,9 @@ use Openpesa\SDK\Forodha;
 
 The above code imports the Pesa SDK for us.
 
-Next we set our app credentials.
+Next, we set our app credentials.
+
+
 
 ```php
 $apiKey     = "your_API_key";
@@ -42,7 +45,8 @@ $forodha = new Forodha([
 
 We have just required the Forodha module into our app and assigned it to the `$forodha` variable. We initialize it with our `$api_key` and `$public_key` which will be used to make authenticated calls to the airtime service. Easy right?
 
-Now let’s setup out transaction.
+Now let’s set up our transaction.
+
 
 ```php
 
@@ -59,7 +63,7 @@ $data = [
 
 ```
 
-In order to trnsact from customer to bussines you need the following.
+In order to transact from customer to business, you need the following.
 
 - An Amount
 - A CustomerMSISDN
@@ -70,7 +74,8 @@ In order to trnsact from customer to bussines you need the following.
 - Purchased Items Desc
 - ThirdParty Conversation ID
 
-Next up we have a function to execute the transaction right below the `// Execute transaction` line
+Next up we have a function to execute the transaction right below the `// Execute transaction` line.
+
 
 ```php
 try {
@@ -83,12 +88,14 @@ try {
 
 ```
 
-If the code works and the transaction is succesiful, it will print the response onto the console logs. If it’s not successful, it will print out an error instead.
+If the code works and the transaction is successful, it will print the response onto the console logs. If it’s not successful, it will print out an error instead.
 
 You’re all set!
 
 
-## Example Full
+
+## Example Full 
+
 
 ```php
 <?php

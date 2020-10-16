@@ -10,4 +10,6 @@ Pesa PHP SDK can be installed  using Composer,
 
 > ## Note
 >
-> Before using Pesa PHP SDK , make sure that your enviroment(server) meets the requirements, in particular the PHP version and the PHP extensions that are needed. You may find that you have to uncomment the php.ini “extension” lines to enable “curl” and “intl”, for instance.
+> Before using Pesa PHP SDK, make sure that your environment(server) meets the requirements, in particular, the PHP version and the PHP extensions that are needed. You may find that you have to uncomment the php.ini “extension” lines to enable “curl” and “intl”, for instance.
+
+

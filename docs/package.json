@@ -1,8 +1,7 @@
 {
-  "name": "php-pesa",
+  "name": "php-pesa-docs",
   "version": "0.0.1",
-  "description": "Pesa PHP SDK",
-  "main": "index.js",
+  "description": "Pesa SDK for PHP",  
   "authors": {
     "name": "Alpha Olomi",
     "email": "alphaolomi@gmail.com"
