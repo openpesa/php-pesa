@@ -15,7 +15,8 @@ before_script:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
-  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover  
 
-after_script:
-  - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+after_script:  
+  - wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --repository=openpesa/php-pesa --format=php-clover coverage.clover
+  
