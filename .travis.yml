@@ -18,7 +18,7 @@ before_install:
 before_script:
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
-  - npm ci
+  - cd docs && npm ci
 
 script:
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
