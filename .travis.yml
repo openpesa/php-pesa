@@ -24,11 +24,12 @@ before_script:
     - cd docs && npm install && cd ..
 
 script:
-    - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
-    - wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    # - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+    - ./vendor/bin/phpunit --coverage-clover coverage.xml
     - cd docs && npm run build && cd ..
 
-# after_script:
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
 
 deploy:
     provider: pages
