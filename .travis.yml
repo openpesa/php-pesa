@@ -26,15 +26,15 @@ before_script:
 script:
     - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
     - cd docs && npm run build && cd ..
-
-after_script:
     - wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --repository=openpesa/php-pesa --format=php-clover coverage.clover
+
+# after_script:
 
 deploy:
     provider: pages
     strategy: git
-    cleanup: false
-    local_dir: docs/src/.vuepress/dist
+    skip_cleanup: true
+    local_dir: ./docs/src/.vuepress/dist
     token: $GITHUB_TOKEN
     keep_history: true
     on:
