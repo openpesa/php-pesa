@@ -1,21 +1,38 @@
 language: php
 
 php:
-#  - 7.1
-  - 7.2
+  # - 7.1
+  # - 7.2
   - 7.3
 
-env:
-  matrix:
-    - COMPOSER_FLAGS="--prefer-lowest"
-    - COMPOSER_FLAGS=""
+# env:
+#   matrix:
+#     - COMPOSER_FLAGS="--prefer-lowest"
+#     - COMPOSER_FLAGS=""
+
+before_install:
+  - nvm install stable
+  - nvm use stable
+
 
 before_script:
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+  - npm ci
 
 script:
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+  - cd docs && npm run build
 
 after_script:
   - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: docs/src/.vuepress/dist
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  on:
+    branch: dov-docs
