@@ -126,6 +126,22 @@ class ForodhaTest extends TestCase
         $this->assertArrayHasKey('output_ThirdPartyConversationID', $result);
     }
 
+     /** @test
+     * @throws GuzzleException
+     */
+    public function forodha_query_status()
+    {
+        // Arrange - Done in the set up method
+        $session = $this->forodha->get_session()['output_SessionID'];
+        $result = $this->forodha->query(Fixture::$data_query, $session);
+        // Act
+        // Assert
+        $this->assertArrayHasKey('output_ResponseCode', $result);
+        $this->assertArrayHasKey('output_ResponseDesc', $result);
+        $this->assertArrayHasKey('output_ConversationID', $result);
+        $this->assertArrayHasKey('output_ThirdPartyConversationID', $result);
+    }
+
     /** @test
      * @throws GuzzleException
      */
