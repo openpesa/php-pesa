@@ -58,7 +58,7 @@ class Fixture
 
     public static $data_ddc = [
         "input_AgreedTC" => "1",
-        "input_Country" => "TNZ",
+        "input_Country" => "TZN",
         "input_CustomerMSISDN" => "000000000001",
         "input_EndRangeOfDays" => "22",
         "input_ExpiryDate" => "20201126",
@@ -74,7 +74,7 @@ class Fixture
     public static $data_ddp = [
         "input_Amount" => "10",
         "input_Country" => "TNZ",
-        "input_Currency" => "GHS",
+        "input_Currency" => "TZS",
         "input_CustomerMSISDN" => "000000000001",
         "input_ServiceProviderCode" => "000000",
         "input_ThirdPartyConversationID" => "AAA6d1f939c1005v2de053v4912jbasdj1j2kk",

@@ -46,31 +46,31 @@ class Forodha
         'c2b' => [
             'name' => 'Consumer 2 Business',
             'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/c2bPayment/singleStage/",
-            'encryptSessionKey' => false,
+            'encryptSessionKey' => true,
             'rules' => []
         ],
         'b2c' => [
             'name' => 'Business 2 Consumer',
             'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/b2cPayment/singleStage/",
-            'encryptSessionKey' => false,
+            'encryptSessionKey' => true,
             'rules' => []
         ],
         'rt' => [
             'name' => 'Reverse Transaction',
             'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/reversal/",
-            'encryptSessionKey' => false,
+            'encryptSessionKey' => true,
             'rules' => []
         ],
         'query' => [
             'name' => 'Query Transaction Status',
             'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/queryTransactionStatus/",
-            'encryptSessionKey' => false,
+            'encryptSessionKey' => true,
             'rules' => []
         ],
         'ddc' => [
             'name' => 'Direct Debits create',
             'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/directDebitCreation/",
-            'encryptSessionKey' => false,
+            'encryptSessionKey' => true,
             'rules' => []
         ],
         'ddp' => [
@@ -83,7 +83,7 @@ class Forodha
 
     /**
      * Forodha constructor.
-     * @param $options
+     * @param $options array
      * @param null $client
      * @param null $rsa
      */
@@ -91,6 +91,7 @@ class Forodha
     {
 
         $options['auth_url'] = $options['auth_url'] ?? self::AUTH_URL;
+        $options['client_options'] = $options['client_options'] ?? array();
         $this->options = $options;
         $this->client = ($client instanceof Client)
             ? $client
