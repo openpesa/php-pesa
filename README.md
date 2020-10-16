@@ -1,43 +1,90 @@
-# Pesa SDK
+# Pesa SDK for PHP
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/openpesa/pesa.svg?style=flat-square&?include_prereleases)](https://packagist.org/packages/openpesa/pesa)
 [![Build Status](https://img.shields.io/travis/openpesa/php-pesa/develop.svg?style=flat-square)](https://travis-ci.org/openpesa/php-pesa)
 [![codecov.io](https://img.shields.io/codecov/c/github/openpesa/php-pesa/main?style=flat-square)](https://codecov.io/github/openpesa/php-pesa)
 [![Total Downloads](https://img.shields.io/packagist/dt/openpesa/pesa.svg?style=flat-square)](https://packagist.org/packages/openpesa/pesa)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+The **Pesa SDK for PHP** makes it easy for developers to access [OpenAPI](https://openapiportal.m-pesa.com/) in their PHP code, and build robust applications and software using services like Customber 2 Bussiness, Query etc.
 
-## Installation
+## Documentation
 
-You can install the package via composer:
+Take a look at the [API docs here](https://php-pesa.netlify.app/).
 
-```bash
-composer require openpesa/pesa
-```
+## Getting Started
+
+1. **Sign up for OpenAPI Portal** – Before you begin, you need to
+   sign up for an account and retrieve your credentials.
+
+1. **Minimum requirements** – To run the SDK, your system will need to meet the
+   [minimum requirements](https://php-pesa.netlify.app/docs/requirements.html), including having **PHP >= 7.1**.
+   <!-- We highly recommend having it compiled with the cURL extension and cURL
+   7.16.2+ compiled with a TLS backend (e.g., NSS or OpenSSL). -->
+1. **Install the SDK** – Using [Composer] is the recommended way to install the
+   Pesa SDK for PHP. The SDK is available via [Packagist] under the
+   [`openpesa/php-pesa`](https://packagist.org/packages/openpesa/pesa) package. If Composer is installed globally on your system, you can run the following in the base directory of your project to add the SDK as a dependency:
+   ```sh
+   composer require openpesa/pesa
+   ```
+   Please see the
+   [Installation section of the User Guide](https://php-pesa.netlify.app/docs/installation.html) for more
+   detailed information about installing the SDK through Composer and other
+   means.
+1. **Using the SDK** – The best way to become familiar with how to use the SDK
+   is to read the [User Guide](https://php-pesa.netlify.app/docs/guide.html). 
+   
+   <!-- The [Getting Started Guide](#) will help you become familiar with
+   the basic concepts. -->
+
 
 ## Usage
 
-``` php
-use Openpesa\SDK\Pesa;
+### Quick Examples
 
-// Set the consumer key and consumer secret as follows
-$username = 'YOUR_USERNAME'; // use 'sandbox' for development in the test environment
-$apiKey   = 'YOUR_API_KEY'; // use your sandbox app API key for development in the test environment
+```php
 
-// Get one of the services
-$pesa       = new Pesa($public_key, $apiKey);
+require 'vendor/autoload.php';
 
-// Use the service
-$result = $pesa->c2b($invoice_id, $phone_number, $amount, $reference_id, $shortcode);
+use Openpesa\SDK\Forodha;
 
-print_r($result);
+// Intiate with credntials
+$forodha = new Forodha([
+            'api_key' => 'YOUR_API_KEY', 
+            'public_key' => 'PUBLIC_KEY', 
+            'client_options' => [], 
+        ]);
+
+// Setup the transaction 
+$data = [
+    'input_Amount' => '10000',
+    'input_Country' => 'TZN',
+    'input_Currency' => 'TZS',
+    'input_CustomerMSISDN' => '255766303775',
+    'input_ServiceProviderCode' => '000000',
+    'input_ThirdPartyConversationID' => 'rerekf',
+    'input_TransactionReference' => rand(),
+    'input_PurchasedItemsDesc' => 'Test Two Item'
+];
+
+// Execute 
+$result = $forodha->transact('c2b', $data);
+
+// Print results
+var_dump($result);
+
 ```
+
+For more example check [pesa-demo-example](https://github.com/openpesa/php-pesa/tree/develop/examples).
 
 ### Testing
 
-``` bash
+```bash
 composer test
 ```
+
+## Opening Issues
+
+If you have a feature requrest or you encounter a bug, please file an issue on [our issue tracker on GitHub](https://github.com/openpesa/php-pesa/issues).
 
 ### Changelog
 
@@ -45,7 +92,8 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Please review our [CONTRIBUTING](CONTRIBUTING.md) for details. 
+
 
 ### Security
 
@@ -53,14 +101,10 @@ If you discover any security related issues, please email alphaolomi@gmail.com i
 
 ## Credits
 
-- [Alpha Olomi](https://github.com/openpesa)
-- [Ley](https://github.com/leyluj)
-- [All Contributors](../../contributors)
+-   [Alpha Olomi](https://github.com/openpesa)
+-   [Ley](https://github.com/leyluj)
+-   [All Contributors](../../contributors)
 
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## PHP Package Boilerplate
-
-This package was generated using the [PHP Package Boilerplate](https://laravelpackageboilerplate.com).

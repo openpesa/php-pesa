@@ -1,0 +1,18 @@
+{
+  "name": "php-pesa-docs",
+  "version": "0.0.1",
+  "description": "Pesa SDK for PHP",  
+  "authors": {
+    "name": "Alpha Olomi",
+    "email": "alphaolomi@gmail.com"
+  },
+  "repository": "https://github.com/openpesa/php-pesa",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.3"
+  }
+}

@@ -1,7 +1,8 @@
 {
     "name": "openpesa/pesa",
-    "description": "pesa",
+    "description": "Pesa PHP SDK",
     "keywords": [
+        "api",
         "openpesa",
         "pesa"
     ],
@@ -13,28 +14,37 @@
             "name": "Alpha Olomi",
             "email": "alphaolomi@gmail.com",
             "role": "Developer"
+        },
+        {
+            "name": "Leylow Lujuo",
+            "email": "leyluj21@gmail.com",
+            "role": "Developer"
         }
     ],
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "guzzlehttp/guzzle": "^6.0",
+        "phpseclib/phpseclib": "^2.0",
+        "ext-json": "*",
+        "ext-openssl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^7.0",
+        "scrutinizer/ocular": "^1.7"
     },
     "autoload": {
         "psr-4": {
-            "Openpesa\\Pesa\\": "src"
+            "Openpesa\\SDK\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Openpesa\\Pesa\\Tests\\": "tests"
+            "Openpesa\\SDK\\Tests\\": "tests"
         }
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-
     },
     "config": {
         "sort-packages": true
