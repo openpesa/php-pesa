@@ -10,13 +10,17 @@ php:
 #     - COMPOSER_FLAGS="--prefer-lowest"
 #     - COMPOSER_FLAGS=""
 
+cache:
+    directories:
+        - $HOME/.composer/cache
+
 before_install:
   - nvm install stable
   - nvm use stable
 
 
 before_script:
-  - travis_retry composer self-update
+  # - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
   - cd docs && npm ci
 
