@@ -39,7 +39,7 @@ module.exports = {
      // if your docs are in a different repo from your main project:
      docsRepo: 'openpesa/php-pesa',
      // if your docs are not at the root of the repo:
-     docsDir: 'src/docs',
+     docsDir: 'docs/src',
      // if your docs are in a specific branch (defaults to 'master'):
      docsBranch: 'develop',
      // defaults to false, set to true to enable
