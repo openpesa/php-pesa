@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/openpesa/pesa.svg?style=flat-square&?include_prereleases)](https://packagist.org/packages/openpesa/pesa)
 [![Build Status](https://img.shields.io/travis/openpesa/php-pesa/develop.svg?style=flat-square)](https://travis-ci.org/openpesa/php-pesa)
-[![codecov.io](https://codecov.io/github/openpesa/php-pesa/coverage.svg)](https://codecov.io/github/openpesa/php-pesa)
+[![codecov.io](https://img.shields.io/codecov/c/github/openpesa/php-pesa/main?style=flat-square)](https://codecov.io/github/openpesa/php-pesa)
 [![Total Downloads](https://img.shields.io/packagist/dt/openpesa/pesa.svg?style=flat-square)](https://packagist.org/packages/openpesa/pesa)
 
 The **Pesa SDK for PHP** makes it easy for developers to access [OpenAPI](https://openapiportal.m-pesa.com/) in their PHP code, and build robust applications and software using services like Customber 2 Bussiness, Query etc.
@@ -47,7 +47,7 @@ require 'vendor/autoload.php';
 
 use Openpesa\SDK\Forodha;
 
-// Intiate with credntials
+// Intiate with credentials
 $forodha = new Forodha([
             'api_key' => 'YOUR_API_KEY', 
             'public_key' => 'PUBLIC_KEY', 
@@ -97,7 +97,7 @@ Please review our [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ### Security
 
-If you discover any security related issues, please email alphaolomi@gmail.com instead of using the issue tracker.
+If you discover any security related issues, please email [alphaolomi@gmail.com](mailto:alphaolomi@gmail.com) instead of using the issue tracker.
 
 ## Credits
 

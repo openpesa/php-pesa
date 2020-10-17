@@ -142,8 +142,7 @@ class Forodha
      */
     public function query($data, $session = null)
     {
-        if (!$session)
-            $session = $this->get_session()['output_SessionID'];
+        $session = ($session) ?? $this->get_session()['output_SessionID'];
 
         $response = $this->client->get(self::TRANSACT_TYPE['query']['url'], [
             'json' => $data,
