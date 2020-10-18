@@ -47,7 +47,7 @@ require 'vendor/autoload.php';
 
 use Openpesa\SDK\Forodha;
 
-// Intiate with credntials
+// Intiate with credentials
 $forodha = new Forodha([
             'api_key' => 'YOUR_API_KEY', 
             'public_key' => 'PUBLIC_KEY', 
