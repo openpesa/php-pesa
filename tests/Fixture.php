@@ -28,15 +28,15 @@ class Fixture
         'input_TransactionReference' => 'odfdferre',
         'input_PurchasedItemsDesc' => 'Test Two Item'
     ];
-    public static $data_b2c = [
-        'input_ReversalAmount' => 12.12,
+    public static $data_reversal = [
+        'input_ReversalAmount' => 1212,
         'input_TransactionID' => 'odfdferre',
         'input_Country' => 'TZN',
         'input_ServiceProviderCode' => '000000',
         'input_ThirdPartyConversationID' => 'asv02e5958774f7ab228d83d0d689761',
     ];
 
-    public static $data_reversal = [
+    public static $data_b2c = [
         'input_Amount' => 5030,
         'input_Country' => 'TZN',
         'input_Currency' => 'TZS',
