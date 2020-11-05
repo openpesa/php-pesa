@@ -7,6 +7,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use phpseclib\Crypt\RSA;
 
+/**
+ * @package Openpesa\SDK
+ */
 class Pesa
 {
 
@@ -40,6 +43,7 @@ class Pesa
 
     /**
      * TRANSACT TYPE
+     * 
      * @var array
      */
     const TRANSACT_TYPE = [
@@ -83,6 +87,8 @@ class Pesa
 
     /**
      * Pesa constructor.
+     * 
+     * 
      * @param $options array
      * @param null $client
      * @param null $rsa
@@ -108,6 +114,8 @@ class Pesa
 
     /**
      * Encrypts public key
+     * 
+     * @internal
      * @param $key
      * @return string
      */
@@ -120,6 +128,8 @@ class Pesa
 
     /**
      * Get Session Key
+     * 
+     * @api
      * @return mixed
      * @throws GuzzleException
      */
@@ -133,8 +143,9 @@ class Pesa
     }
 
     /**
-     * Query the status of the transaction that has been initiated.
+     * The Query Transaction Status API call is used to query the status of the transaction that has been initiated.
      *
+     * @api
      * @param $data mixed
      * @param $session null|mixed
      * @return mixed
@@ -152,8 +163,11 @@ class Pesa
     }
 
     /**
-     * Perform a transaction
+     * customer to business (C2B)
      *
+     * The C2B API call is used as a standard customer-to-business transaction. Funds from the customer’s mobile money wallet will be deducted and be transferred to the mobile money wallet of the business. To authenticate and authorize this transaction, M-Pesa Payments Gateway will initiate a USSD Push message to the customer to gather and verify the mobile money PIN number. This number is not stored and is used only to authorize the transaction.
+     *
+     * @api
      * @param $type string
      * @param $data mixed
      * @param $session null|string
@@ -176,8 +190,14 @@ class Pesa
 
 
     /**
-     * Perform a transaction
+     * Business to Customer (B2C) 
+     * 
+     * The B2C API Call is used as a standard business-to-customer funds disbursement. Funds from the business account’s wallet will be deducted and paid to the mobile money wallet of the customer. Use cases for the B2C includes:
+     *  -	Salary payments 
+     *  -	Funds transfers from business
+     *  -	Charity pay-out
      *
+     * @api
      * @param $type string
      * @param $data mixed
      * @param $session null|string
@@ -198,9 +218,42 @@ class Pesa
         return json_decode($response->getBody(), true);
     }
 
+
     /**
-     * Perform a transaction
+     * business to business (B2B)
+     * 
+     * The B2B API Call is used for business-to-business transactions. Funds from the business’ mobile money wallet will be deducted and transferred to the mobile money wallet of the other business. Use cases for the B2C includes: 
+     *  -  Stock purchases 
+     *  -  Bill payment 
+     *  -  Ad-hoc payment
      *
+     * @api
+     * @param $type string
+     * @param $data mixed
+     * @param $session null|string
+     * @return mixed
+     * @throws GuzzleException
+     */
+    public function b2b($data, $session = null)
+    {
+
+        $session = ($session) ?? $this->get_session()['output_SessionID'];
+
+        $token = (self::TRANSACT_TYPE['b2b']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+
+        $response = $this->client->post(self::TRANSACT_TYPE['rt']['url'], [
+            'json' => $data,
+            'headers' => ['Authorization' => "Bearer {$token}"]
+        ]);
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Payment reversals 
+     * 
+     * The Reversal API is used to reverse a successful transaction. Using the Transaction ID of a previously successful transaction,  the OpenAPI will withdraw the funds from the recipient party’s mobile money wallet and revert the funds to the mobile money wallet of the initiating party of the original transaction.
+     *
+     * @api
      * @param $type string
      * @param $data mixed
      * @param $session null|string
@@ -222,9 +275,20 @@ class Pesa
     }
 
 
+
+
+
     /**
-     * Perform a transaction
-     *
+     * 
+     * Direct Debit Create Mandate
+     * 
+     * 
+     * Direct Debits are payments in M-Pesa that are initiated by the Payee alone without any Payer interaction, but permission must first be granted by the Payer. The granted permission from the Payer to Payee is commonly termed a ‘Mandate’, and M-Pesa must hold details of this Mandate.
+     * The Direct Debit API set allows an organisation to get the initial consent of their customers to create the Mandate that allows the organisation to debit customer's account at an agreed frequency and amount for services rendered. After the initial consent, the debit of the account will not involve any customer interaction. The Direct Debit feature makes use of the following API calls:
+     * •	Create a Direct Debit mandate
+     * •	Pay a mandate
+     * The customer is able to view and cancel the Direct Debit mandate from G2 menu accessible via USSD menu or the Smartphone Application.
+     * @api
      * @param $type string
      * @param $data mixed
      * @param $session null|string
@@ -246,8 +310,15 @@ class Pesa
     }
 
     /**
-     * Perform a transaction
+     * Direct Debit Payment
+     * 
+     * Direct Debits are payments in M-Pesa that are initiated by the Payee alone without any Payer interaction, but permission must first be granted by the Payer. The granted permission from the Payer to Payee is commonly termed a ‘Mandate’, and M-Pesa must hold details of this Mandate. 
+     * The Direct Debit API set allows an organisation to get the initial consent of their customers to create the Mandate that allows the organisation to debit customer's account at an agreed frequency and amount for services rendered. After the initial consent, the debit of the account will not involve any customer interaction. The Direct Debit feature makes use of the following API calls:
+     * •	Create a Direct Debit mandate
+     * •	Pay a mandate
+     * The customer is able to view and cancel the Direct Debit mandate from G2 menu accessible via USSD menu or the Smartphone Application.
      *
+     * @api
      * @param $type string
      * @param $data mixed
      * @param $session null|string
@@ -267,6 +338,4 @@ class Pesa
         ]);
         return json_decode($response->getBody(), true);
     }
-
-
 }
