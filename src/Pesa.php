@@ -59,6 +59,13 @@ class Pesa
             'encryptSessionKey' => true,
             'rules' => []
         ],
+
+        'b2b' => [
+            'name' => 'Business 2 Business',
+            'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/b2bPayment/",
+            'encryptSessionKey' => true,
+            'rules' => []
+        ],
         'rt' => [
             'name' => 'Reverse Transaction',
             'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/reversal/",

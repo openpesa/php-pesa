@@ -47,6 +47,17 @@ class Fixture
         'input_PurchasedItemsDesc' => 'Salary payment'
     ];
 
+    public static $data_b2b = [
+        "input_Amount"=> "10", 
+        "input_Country"=> "TZN", 
+        "input_Currency"=> "TZS", 
+        "input_PrimaryPartyCode"=> "000000", 
+        "input_ReceiverPartyCode"=> "000001", 
+        "input_ThirdPartyConversationID"=> "asv02e5958774f7ba228d83d0d689761", 
+        "input_TransactionReference"=> "T12348C",
+        "input_PurchasedItemsDesc"=> "Shoes Supply"
+    ];
+
     public static $data_query = [
         'input_QueryReference' => '000000000000000000001',
         'input_ServiceProviderCode' => '000000',
