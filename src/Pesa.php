@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use phpseclib\Crypt\RSA;
 
-class Forodha
+class Pesa
 {
 
     /**
@@ -82,7 +82,7 @@ class Forodha
     ];
 
     /**
-     * Forodha constructor.
+     * Pesa constructor.
      * @param $options array
      * @param null $client
      * @param null $rsa
@@ -160,17 +160,113 @@ class Forodha
      * @return mixed
      * @throws GuzzleException
      */
-    public function transact(string $type, $data, $session = null)
+    public function c2b($data, $session = null)
     {
 
         $session = ($session) ?? $this->get_session()['output_SessionID'];
 
-        $token = (self::TRANSACT_TYPE[$type]['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+        $token = (self::TRANSACT_TYPE['c2b']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
 
-        $response = $this->client->post(self::TRANSACT_TYPE[$type]['url'], [
+        $response = $this->client->post(self::TRANSACT_TYPE['c2b']['url'], [
             'json' => $data,
             'headers' => ['Authorization' => "Bearer {$token}"]
         ]);
         return json_decode($response->getBody(), true);
     }
+
+
+    /**
+     * Perform a transaction
+     *
+     * @param $type string
+     * @param $data mixed
+     * @param $session null|string
+     * @return mixed
+     * @throws GuzzleException
+     */
+    public function b2c($data, $session = null)
+    {
+
+        $session = ($session) ?? $this->get_session()['output_SessionID'];
+
+        $token = (self::TRANSACT_TYPE['b2c']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+
+        $response = $this->client->post(self::TRANSACT_TYPE['b2c']['url'], [
+            'json' => $data,
+            'headers' => ['Authorization' => "Bearer {$token}"]
+        ]);
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Perform a transaction
+     *
+     * @param $type string
+     * @param $data mixed
+     * @param $session null|string
+     * @return mixed
+     * @throws GuzzleException
+     */
+    public function reverse($data, $session = null)
+    {
+
+        $session = ($session) ?? $this->get_session()['output_SessionID'];
+
+        $token = (self::TRANSACT_TYPE['rt']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+
+        $response = $this->client->post(self::TRANSACT_TYPE['rt']['url'], [
+            'json' => $data,
+            'headers' => ['Authorization' => "Bearer {$token}"]
+        ]);
+        return json_decode($response->getBody(), true);
+    }
+
+
+    /**
+     * Perform a transaction
+     *
+     * @param $type string
+     * @param $data mixed
+     * @param $session null|string
+     * @return mixed
+     * @throws GuzzleException
+     */
+    public function debit_create($data, $session = null)
+    {
+
+        $session = ($session) ?? $this->get_session()['output_SessionID'];
+
+        $token = (self::TRANSACT_TYPE['ddc']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+
+        $response = $this->client->post(self::TRANSACT_TYPE['ddc']['url'], [
+            'json' => $data,
+            'headers' => ['Authorization' => "Bearer {$token}"]
+        ]);
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Perform a transaction
+     *
+     * @param $type string
+     * @param $data mixed
+     * @param $session null|string
+     * @return mixed
+     * @throws GuzzleException
+     */
+    public function debit_payment($data, $session = null)
+    {
+
+        $session = ($session) ?? $this->get_session()['output_SessionID'];
+
+        $token = (self::TRANSACT_TYPE['ddp']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+
+        $response = $this->client->post(self::TRANSACT_TYPE['ddp']['url'], [
+            'json' => $data,
+            'headers' => ['Authorization' => "Bearer {$token}"]
+        ]);
+        return json_decode($response->getBody(), true);
+    }
+
+
 }
