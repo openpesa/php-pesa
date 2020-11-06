@@ -9,13 +9,13 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Openpesa\SDK\Forodha;
+use Openpesa\SDK\Pesa;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @property Forodha $forodha
+ * @property Pesa $pesa
  */
-class ForodhaTest extends TestCase
+class PesaTest extends TestCase
 {
     public function setup()
     {
@@ -41,17 +41,17 @@ class ForodhaTest extends TestCase
 
         $client = new Client(['handler' => $handlerStack]);
 
-        $this->forodha = new Forodha([
+        $this->pesa = new Pesa([
             'api_key' => Fixture::$apiKey,
             'public_key' => Fixture::$publicKey,
         ], $client);
     }
 
     /** @test */
-    public function forodha_instantiable()
+    public function pesa_instantiable()
     {
-        $this->assertInstanceOf(Forodha::class, $this->forodha);
-        $this->assertInstanceOf(Forodha::class, new Forodha([
+        $this->assertInstanceOf(Pesa::class, $this->pesa);
+        $this->assertInstanceOf(Pesa::class, new Pesa([
             'api_key' => Fixture::$apiKey,
             'public_key' => Fixture::$publicKey,
             'client_options' => [],
@@ -59,20 +59,20 @@ class ForodhaTest extends TestCase
     }
 
     /** @test */
-    public function forodha_has_these_attributes()
+    public function pesa_has_these_attributes()
     {
-        $this->assertClassHasAttribute('options', get_class($this->forodha));
-        $this->assertClassHasAttribute('client', get_class($this->forodha));
+        $this->assertClassHasAttribute('options', get_class($this->pesa));
+        $this->assertClassHasAttribute('client', get_class($this->pesa));
     }
 
     /** @test
      * @throws GuzzleException
      */
-    public function forodha_get_session()
+    public function pesa_get_session()
     {
         // Arrange - Done in the set up method
         // Act
-        $response = $this->forodha->get_session();
+        $response = $this->pesa->get_session();
         // Assert
         $this->assertArrayHasKey('output_SessionID', $response);
         $this->assertEquals(1, $response['output_SessionID']);
@@ -81,11 +81,28 @@ class ForodhaTest extends TestCase
     /** @test
      * @throws GuzzleException
      */
-    public function forodha_transact_c2b()
+    public function pesa_transact_c2b()
     {
         // Arrange - Done in the set up method
-        $session = $this->forodha->get_session()['output_SessionID'];
-        $result = $this->forodha->transact('c2b', Fixture::$data_c2b, $session);
+        $session = $this->pesa->get_session()['output_SessionID'];
+        $result = $this->pesa->c2b(Fixture::$data_c2b, $session);
+        // Act
+        // Assert
+        $this->assertArrayHasKey('output_ResponseCode', $result);
+        $this->assertArrayHasKey('output_ResponseDesc', $result);
+        $this->assertArrayHasKey('output_ConversationID', $result);
+        $this->assertArrayHasKey('output_ThirdPartyConversationID', $result);
+    }
+
+
+      /** @test
+     * @throws GuzzleException
+     */
+    public function pesa_transact_b2b()
+    {
+        // Arrange - Done in the set up method
+        $session = $this->pesa->get_session()['output_SessionID'];
+        $result = $this->pesa->b2b(Fixture::$data_b2b, $session);
         // Act
         // Assert
         $this->assertArrayHasKey('output_ResponseCode', $result);
@@ -97,11 +114,11 @@ class ForodhaTest extends TestCase
     /** @test
      * @throws GuzzleException
      */
-    public function forodha_transact_b2c()
+    public function pesa_transact_b2c()
     {
         // Arrange - Done in the set up method
-        $session = $this->forodha->get_session()['output_SessionID'];
-        $result = $this->forodha->transact('b2c', Fixture::$data_b2c, $session);
+        $session = $this->pesa->get_session()['output_SessionID'];
+        $result = $this->pesa->b2c(Fixture::$data_b2c, $session);
         // Act
         // Assert
         $this->assertArrayHasKey('output_ResponseCode', $result);
@@ -113,27 +130,11 @@ class ForodhaTest extends TestCase
     /** @test
      * @throws GuzzleException
      */
-    public function forodha_transact_reversal()
+    public function pesa_transact_reversal()
     {
         // Arrange - Done in the set up method
-        $session = $this->forodha->get_session()['output_SessionID'];
-        $result = $this->forodha->transact('rt', Fixture::$data_reversal, $session);
-        // Act
-        // Assert
-        $this->assertArrayHasKey('output_ResponseCode', $result);
-        $this->assertArrayHasKey('output_ResponseDesc', $result);
-        $this->assertArrayHasKey('output_ConversationID', $result);
-        $this->assertArrayHasKey('output_ThirdPartyConversationID', $result);
-    }
-
-     /** @test
-     * @throws GuzzleException
-     */
-    public function forodha_query_status()
-    {
-        // Arrange - Done in the set up method
-        $session = $this->forodha->get_session()['output_SessionID'];
-        $result = $this->forodha->query(Fixture::$data_query, $session);
+        $session = $this->pesa->get_session()['output_SessionID'];
+        $result = $this->pesa->reverse(Fixture::$data_reversal, $session);
         // Act
         // Assert
         $this->assertArrayHasKey('output_ResponseCode', $result);
@@ -145,11 +146,11 @@ class ForodhaTest extends TestCase
     /** @test
      * @throws GuzzleException
      */
-    public function forodha_transact_ddc()
+    public function pesa_query_status()
     {
         // Arrange - Done in the set up method
-        $session = $this->forodha->get_session()['output_SessionID'];
-        $result = $this->forodha->transact('ddc', Fixture::$data_ddc, $session);
+        $session = $this->pesa->get_session()['output_SessionID'];
+        $result = $this->pesa->query(Fixture::$data_query, $session);
         // Act
         // Assert
         $this->assertArrayHasKey('output_ResponseCode', $result);
@@ -161,11 +162,27 @@ class ForodhaTest extends TestCase
     /** @test
      * @throws GuzzleException
      */
-    public function forodha_transact_ddp()
+    public function pesa_transact_ddc()
     {
         // Arrange - Done in the set up method
-        $session = $this->forodha->get_session()['output_SessionID'];
-        $result = $this->forodha->transact('ddp', Fixture::$data_ddp, $session);
+        $session = $this->pesa->get_session()['output_SessionID'];
+        $result = $this->pesa->debit_create(Fixture::$data_ddc, $session);
+        // Act
+        // Assert
+        $this->assertArrayHasKey('output_ResponseCode', $result);
+        $this->assertArrayHasKey('output_ResponseDesc', $result);
+        $this->assertArrayHasKey('output_ConversationID', $result);
+        $this->assertArrayHasKey('output_ThirdPartyConversationID', $result);
+    }
+
+    /** @test
+     * @throws GuzzleException
+     */
+    public function pesa_transact_ddp()
+    {
+        // Arrange - Done in the set up method
+        $session = $this->pesa->get_session()['output_SessionID'];
+        $result = $this->pesa->debit_payment(Fixture::$data_ddp, $session);
         // Act
         // Assert
         $this->assertArrayHasKey('output_ResponseCode', $result);

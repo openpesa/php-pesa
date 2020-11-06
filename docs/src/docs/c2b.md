@@ -17,7 +17,7 @@ Here’s the code that does this:
 
 ```php
 require 'vendor/autoload.php';
-use Openpesa\SDK\Forodha;
+use Openpesa\SDK\Pesa;
 ```
 
 The above code imports the Pesa SDK for us.
@@ -36,14 +36,14 @@ These are the credentials that we use to authenticate requests to the OpenAPI se
 Now we are going to initialize the Pesa SDK.
 
 ```php
-$forodha = new Forodha([
+$pesa = new Pesa([
     'api_key' => $apiKey,
     'public_key' => $publicKey,
 ]);
 
 ```
 
-We have just required the Forodha module into our app and assigned it to the `$forodha` variable. We initialize it with our `$api_key` and `$public_key` which will be used to make authenticated calls to the airtime service. Easy right?
+We have just required the Pesa module into our app and assigned it to the `$pesa` variable. We initialize it with our `$api_key` and `$public_key` which will be used to make authenticated calls to the airtime service. Easy right?
 
 Now let’s set up our transaction.
 
@@ -80,7 +80,7 @@ Next up we have a function to execute the transaction right below the `// Execut
 ```php
 try {
      // Execute transaction
-    $result = $forodha->transact('c2b', $data);
+    $result = $pesa->transact('c2b', $data);
     print_r($result);
 } catch (Throwable $th) {
     echo $th->getMessage();
@@ -101,12 +101,12 @@ You’re all set!
 <?php
 require 'vendor/autoload.php';
 
-use Openpesa\SDK\Forodha;
+use Openpesa\SDK\Pesa;
 
 $publicKey = 'MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEArv9yxA69XQKBo24BaF/D+fvlqmGdYjqLQ5WtNBb5tquqGvAvG3WMFETVUSow/LizQalxj2ElMVrUmzu5mGGkxK08bWEXF7a1DEvtVJs6nppIlFJc2SnrU14AOrIrB28ogm58JjAl5BOQawOXD5dfSk7MaAA82pVHoIqEu0FxA8BOKU+RGTihRU+ptw1j4bsAJYiPbSX6i71gfPvwHPYamM0bfI4CmlsUUR3KvCG24rB6FNPcRBhM3jDuv8ae2kC33w9hEq8qNB55uw51vK7hyXoAa+U7IqP1y6nBdlN25gkxEA8yrsl1678cspeXr+3ciRyqoRgj9RD/ONbJhhxFvt1cLBh+qwK2eqISfBb06eRnNeC71oBokDm3zyCnkOtMDGl7IvnMfZfEPFCfg5QgJVk1msPpRvQxmEsrX9MQRyFVzgy2CWNIb7c+jPapyrNwoUbANlN8adU1m6yOuoX7F49x+OjiG2se0EJ6nafeKUXw/+hiJZvELUYgzKUtMAZVTNZfT8jjb58j8GVtuS+6TM2AutbejaCV84ZK58E2CRJqhmjQibEUO6KPdD7oTlEkFy52Y1uOOBXgYpqMzufNPmfdqqqSM4dU70PO8ogyKGiLAIxCetMjjm6FCMEA3Kc8K0Ig7/XtFm9By6VxTJK1Mg36TlHaZKP6VzVLXMtesJECAwEAAQ==';
 $apiKey = '';
 
-$forodha = new Forodha([
+$pesa = new Pesa([
     'api_key' => $apiKey,
     'public_key' => $publicKey,
 ]);
@@ -125,7 +125,7 @@ $data = [
 
 
 try {
-    $result = $forodha->transact('c2b', $data);
+    $result = $pesa->transact('c2b', $data);
     print_r($result);
 } catch (Throwable $th) {
     echo $th->getMessage();
