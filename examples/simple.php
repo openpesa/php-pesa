@@ -10,6 +10,6 @@ $f = new Pesa([
 ]);
 
 
-$t = $f->c2b(Fixture::data());
+$t = $f->c2b(Fixture::$data_c2b);
 var_dump($t);
 
