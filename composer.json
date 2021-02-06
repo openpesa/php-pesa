@@ -22,14 +22,14 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.1|^8.0",
         "guzzlehttp/guzzle": "^6.0|^7.0",
         "phpseclib/phpseclib": "^2.0",
         "ext-json": "*",
         "ext-openssl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0"        
+        "phpunit/phpunit": "^7.0"
     },
     "autoload": {
         "psr-4": {
