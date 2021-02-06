@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PesaTest extends TestCase
 {
-    public function setup()
+    public function setup(): void
     {
         // Create a mock and queue two responses.
         $mock = new MockHandler([
@@ -95,7 +95,7 @@ class PesaTest extends TestCase
     }
 
 
-      /** @test
+    /** @test
      * @throws GuzzleException
      */
     public function pesa_transact_b2b()
