@@ -29,7 +29,7 @@
         "ext-openssl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^7.0|^9.5"
     },
     "autoload": {
         "psr-4": {
