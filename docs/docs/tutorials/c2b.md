@@ -1,4 +1,8 @@
-# Customer 2 Bussines Transaction Fundamentals
+---
+id: c2b
+title: Customer to bussiness transactions
+description: Customer to bussines transactions fundamentals
+---
 
 ## How to transact from customer to business
 
@@ -65,14 +69,15 @@ $data = [
 
 In order to transact from customer to business, you need the following.
 
-- An Amount
-- A CustomerMSISDN
-- Country
-- Currency
-- Service Provider Code
-- Transaction Reference
-- Purchased Items Desc
-- ThirdParty Conversation ID
+| Attribute                | Desccription               | default |
+| ------------------------ | -------------------------- |---- |
+| Amount                   | An Amount                  ||
+| CustomerMSISDN           | A CustomerMSISDN           ||
+| Country                  | Country                    |TZN|
+| Currency                 | Currency                   |TZS|
+| ServiceProviderCode      | Service Provider Code      ||
+| TransactionReference     | Transaction Reference      |random number|
+| ThirdPartyConversationID | Purchased Items Desc       |random number|
 
 Next up we have a function to execute the transaction right below the `// Execute transaction` line.
 

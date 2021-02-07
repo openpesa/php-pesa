@@ -1,3 +1,14 @@
+---
+id: quick_guide
+title: Quick Guide
+---
+
+:::caution
+
+### Warning! 🚧 WIP!
+
+:::
+
 ## Installing to an Existing Project
 
 The Pesa PHP SDK can be an existing project using Composer.
@@ -5,24 +16,21 @@ The Pesa PHP SDK can be an existing project using Composer.
 In your project root:
 
 ```sh
-$ composer require openpesa/pesa
+composer require openpesa/pesa
 ```
 
 As with the earlier two composer install methods, you can omit to install PHPUnit and its dependencies by adding the `“–no-dev”` argument to the `“composer require”` command.
 
 ## Set Up
 
-Copy add API_KEY to your env
-
+Copy add `API_KEY` to your .env file
 
 ### Upgrading
 
 Whenever there is a new release, then from the command line in your project root:
 
 ```sh
-$ composer update
+composer update
 ```
 
-Read the upgrade instructions, and check designated app/Config folders for affected changes.
-
-
+Read the [upgrade instructions](#).

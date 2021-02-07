@@ -1,4 +1,13 @@
-# PSR Compliance
+---
+id: psr_compliance
+title: PSR Compliance
+---
+
+:::caution
+
+### Warning! 🚧 WIP!
+
+:::
 
 The PHP-FIG was created in 2009 to help make code more interoperable between frameworks by ratifying Interfaces, style guides, and more that members were free to implement or not. While Pesa PHP SDK is not a member of the FIG, we are compatible with a number of their proposals. This guide is meant to list the status of our compliance with the various accepted, and some draft, proposals.
 
@@ -17,5 +26,3 @@ This PSR provides a method for organizing files and namespaces to allow for a st
 —
 
 If you find any places that we claim to meet a PSR but have failed to execute it correctly, please let us know and we will get it fixed, or submit a pull request with the required changes.
-
-
