@@ -125,8 +125,8 @@ class Pesa
             $this->api_url = ($options['env'] === "sandbox") ? self::BASE_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
             $this->options['auth_url'] = ($options['env'] === "sandbox") ? self::BASE_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
         } else {
-            $this->api_url =  self::BASE_DOMAIN . "/openapi";
-            $this->options['auth_url'] = self::BASE_DOMAIN . "/openapi";
+            $this->api_url =  self::BASE_DOMAIN . "/sandbox";
+            $this->options['auth_url'] = self::BASE_DOMAIN . "/sandbox";
         }
         $this->api_url .= "/ipg/v2/vodacomTZN/";
         $this->options['auth_url'] .= "/ipg/v2/vodacomTZN/getSession/";
