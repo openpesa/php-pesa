@@ -28,65 +28,72 @@ class Pesa
      * @access private
      */
     private $rsa;
+    /**
+     * API URL
+     * @var string
+     * @access private
+     */
+    private $api_url = "";
 
     /**
      * BASE DOMAIN
      * @const string
      */
-    const BASE_DOMAIN = "https://openapi.m-pesa.com/sandbox/";
+    const BASE_DOMAIN = "https://openapi.m-pesa.com";
+
 
     /**
      * AUTH URL
      * @const string
      */
-    const AUTH_URL = self::BASE_DOMAIN . "ipg/v2/vodacomTZN/getSession/";
+    const AUTH_URL = self::BASE_DOMAIN . "/ipg/v2/vodacomTZN/getSession/";
 
     /**
      * TRANSACT TYPE
-     * 
+     *
      * @var array
      */
     const TRANSACT_TYPE = [
         'c2b' => [
             'name' => 'Consumer 2 Business',
-            'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/c2bPayment/singleStage/",
+            'url' => "c2bPayment/singleStage/",
             'encryptSessionKey' => true,
             'rules' => []
         ],
         'b2c' => [
             'name' => 'Business 2 Consumer',
-            'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/b2cPayment/singleStage/",
+            'url' => "b2cPayment/singleStage/",
             'encryptSessionKey' => true,
             'rules' => []
         ],
 
         'b2b' => [
             'name' => 'Business 2 Business',
-            'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/b2bPayment/",
+            'url' => "b2bPayment/",
             'encryptSessionKey' => true,
             'rules' => []
         ],
         'rt' => [
             'name' => 'Reverse Transaction',
-            'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/reversal/",
+            'url' => "reversal/",
             'encryptSessionKey' => true,
             'rules' => []
         ],
         'query' => [
             'name' => 'Query Transaction Status',
-            'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/queryTransactionStatus/",
+            'url' => "queryTransactionStatus/",
             'encryptSessionKey' => true,
             'rules' => []
         ],
         'ddc' => [
             'name' => 'Direct Debits create',
-            'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/directDebitCreation/",
+            'url' => "directDebitCreation/",
             'encryptSessionKey' => true,
             'rules' => []
         ],
         'ddp' => [
             'name' => 'Direct Debits payment',
-            'url' => self::BASE_DOMAIN . "ipg/v2/vodacomTZN/directDebitPayment/",
+            'url' => "directDebitPayment/",
             'encryptSessionKey' => false,
         ]
 
@@ -94,16 +101,14 @@ class Pesa
 
     /**
      * Pesa constructor.
-     * 
-     * 
+     *
+     *
      * @param $options array
      * @param null $client
      * @param null $rsa
      */
     public function __construct($options, $client = null, $rsa = null)
     {
-
-        $options['auth_url'] = $options['auth_url'] ?? self::AUTH_URL;
         $options['client_options'] = $options['client_options'] ?? array();
         $this->options = $options;
         $this->client = ($client instanceof Client)
@@ -116,12 +121,21 @@ class Pesa
                 ]
             ], $options['client_options']));
 
+        if (array_key_exists("env", $options)) {
+            $this->api_url = ($options['env'] === "sandbox") ? self::BASE_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
+            $this->options['auth_url'] = ($options['env'] === "sandbox") ? self::BASE_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
+        } else {
+            $this->api_url =  self::BASE_DOMAIN . "/openapi";
+            $this->options['auth_url'] = self::BASE_DOMAIN . "/openapi";
+        }
+        $this->api_url .= "/ipg/v2/vodacomTZN/";
+        $this->options['auth_url'] .= "/ipg/v2/vodacomTZN/getSession/";
         $this->rsa = ($rsa instanceof RSA) ? $rsa : new RSA();
     }
 
     /**
      * Encrypts public key
-     * 
+     *
      * @internal
      * @param $key
      * @return string
@@ -135,7 +149,7 @@ class Pesa
 
     /**
      * Get Session Key
-     * 
+     *
      * @api
      * @return mixed
      * @throws GuzzleException
@@ -162,7 +176,7 @@ class Pesa
     {
         $session = ($session) ?? $this->get_session()['output_SessionID'];
 
-        $response = $this->client->get(self::TRANSACT_TYPE['query']['url'], [
+        $response = $this->client->get($this->api_url . self::TRANSACT_TYPE['query']['url'], [
             'json' => $data,
             'headers' => ['Authorization' => "Bearer {$this->encrypt_key($session)}"]
         ]);
@@ -186,9 +200,9 @@ class Pesa
 
         $session = ($session) ?? $this->get_session()['output_SessionID'];
 
-        $token = (self::TRANSACT_TYPE['c2b']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+        $token = ($this->api_url . self::TRANSACT_TYPE['c2b']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
 
-        $response = $this->client->post(self::TRANSACT_TYPE['c2b']['url'], [
+        $response = $this->client->post($this->api_url . self::TRANSACT_TYPE['c2b']['url'], [
             'json' => $data,
             'headers' => ['Authorization' => "Bearer {$token}"]
         ]);
@@ -197,10 +211,10 @@ class Pesa
 
 
     /**
-     * Business to Customer (B2C) 
-     * 
+     * Business to Customer (B2C)
+     *
      * The B2C API Call is used as a standard business-to-customer funds disbursement. Funds from the business account’s wallet will be deducted and paid to the mobile money wallet of the customer. Use cases for the B2C includes:
-     *  -	Salary payments 
+     *  -	Salary payments
      *  -	Funds transfers from business
      *  -	Charity pay-out
      *
@@ -216,9 +230,9 @@ class Pesa
 
         $session = ($session) ?? $this->get_session()['output_SessionID'];
 
-        $token = (self::TRANSACT_TYPE['b2c']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+        $token = ($this->api_url . self::TRANSACT_TYPE['b2c']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
 
-        $response = $this->client->post(self::TRANSACT_TYPE['b2c']['url'], [
+        $response = $this->client->post($this->api_url . self::TRANSACT_TYPE['b2c']['url'], [
             'json' => $data,
             'headers' => ['Authorization' => "Bearer {$token}"]
         ]);
@@ -228,10 +242,10 @@ class Pesa
 
     /**
      * business to business (B2B)
-     * 
-     * The B2B API Call is used for business-to-business transactions. Funds from the business’ mobile money wallet will be deducted and transferred to the mobile money wallet of the other business. Use cases for the B2C includes: 
-     *  -  Stock purchases 
-     *  -  Bill payment 
+     *
+     * The B2B API Call is used for business-to-business transactions. Funds from the business’ mobile money wallet will be deducted and transferred to the mobile money wallet of the other business. Use cases for the B2C includes:
+     *  -  Stock purchases
+     *  -  Bill payment
      *  -  Ad-hoc payment
      *
      * @api
@@ -246,9 +260,9 @@ class Pesa
 
         $session = ($session) ?? $this->get_session()['output_SessionID'];
 
-        $token = (self::TRANSACT_TYPE['b2b']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+        $token = ($this->api_url . self::TRANSACT_TYPE['b2b']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
 
-        $response = $this->client->post(self::TRANSACT_TYPE['rt']['url'], [
+        $response = $this->client->post($this->api_url . self::TRANSACT_TYPE['rt']['url'], [
             'json' => $data,
             'headers' => ['Authorization' => "Bearer {$token}"]
         ]);
@@ -256,8 +270,8 @@ class Pesa
     }
 
     /**
-     * Payment reversals 
-     * 
+     * Payment reversals
+     *
      * The Reversal API is used to reverse a successful transaction. Using the Transaction ID of a previously successful transaction,  the OpenAPI will withdraw the funds from the recipient party’s mobile money wallet and revert the funds to the mobile money wallet of the initiating party of the original transaction.
      *
      * @api
@@ -272,9 +286,9 @@ class Pesa
 
         $session = ($session) ?? $this->get_session()['output_SessionID'];
 
-        $token = (self::TRANSACT_TYPE['rt']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+        $token = ($this->api_url . self::TRANSACT_TYPE['rt']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
 
-        $response = $this->client->post(self::TRANSACT_TYPE['rt']['url'], [
+        $response = $this->client->post($this->api_url . self::TRANSACT_TYPE['rt']['url'], [
             'json' => $data,
             'headers' => ['Authorization' => "Bearer {$token}"]
         ]);
@@ -286,10 +300,10 @@ class Pesa
 
 
     /**
-     * 
+     *
      * Direct Debit Create Mandate
-     * 
-     * 
+     *
+     *
      * Direct Debits are payments in M-Pesa that are initiated by the Payee alone without any Payer interaction, but permission must first be granted by the Payer. The granted permission from the Payer to Payee is commonly termed a ‘Mandate’, and M-Pesa must hold details of this Mandate.
      * The Direct Debit API set allows an organisation to get the initial consent of their customers to create the Mandate that allows the organisation to debit customer's account at an agreed frequency and amount for services rendered. After the initial consent, the debit of the account will not involve any customer interaction. The Direct Debit feature makes use of the following API calls:
      * •	Create a Direct Debit mandate
@@ -307,9 +321,9 @@ class Pesa
 
         $session = ($session) ?? $this->get_session()['output_SessionID'];
 
-        $token = (self::TRANSACT_TYPE['ddc']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+        $token = ($this->api_url . self::TRANSACT_TYPE['ddc']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
 
-        $response = $this->client->post(self::TRANSACT_TYPE['ddc']['url'], [
+        $response = $this->client->post($this->api_url . self::TRANSACT_TYPE['ddc']['url'], [
             'json' => $data,
             'headers' => ['Authorization' => "Bearer {$token}"]
         ]);
@@ -318,8 +332,8 @@ class Pesa
 
     /**
      * Direct Debit Payment
-     * 
-     * Direct Debits are payments in M-Pesa that are initiated by the Payee alone without any Payer interaction, but permission must first be granted by the Payer. The granted permission from the Payer to Payee is commonly termed a ‘Mandate’, and M-Pesa must hold details of this Mandate. 
+     *
+     * Direct Debits are payments in M-Pesa that are initiated by the Payee alone without any Payer interaction, but permission must first be granted by the Payer. The granted permission from the Payer to Payee is commonly termed a ‘Mandate’, and M-Pesa must hold details of this Mandate.
      * The Direct Debit API set allows an organisation to get the initial consent of their customers to create the Mandate that allows the organisation to debit customer's account at an agreed frequency and amount for services rendered. After the initial consent, the debit of the account will not involve any customer interaction. The Direct Debit feature makes use of the following API calls:
      * •	Create a Direct Debit mandate
      * •	Pay a mandate
@@ -337,9 +351,9 @@ class Pesa
 
         $session = ($session) ?? $this->get_session()['output_SessionID'];
 
-        $token = (self::TRANSACT_TYPE['ddp']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
+        $token = ($this->api_url . self::TRANSACT_TYPE['ddp']['encryptSessionKey']) ? $this->encrypt_key($session) : $session;
 
-        $response = $this->client->post(self::TRANSACT_TYPE['ddp']['url'], [
+        $response = $this->client->post($this->api_url . self::TRANSACT_TYPE['ddp']['url'], [
             'json' => $data,
             'headers' => ['Authorization' => "Bearer {$token}"]
         ]);

@@ -98,9 +98,9 @@ class Fixture
             'input_Amount' => rand(1000, 2000),
             'input_Country' => 'TZN',
             'input_Currency' => 'TZS',
-            'input_CustomerMSISDN' => '255766303775',
+            'input_CustomerMSISDN' => '000000000001',
             'input_ServiceProviderCode' => '000000',
-            'input_ThirdPartyConversationID' => 'rerekf',
+            'input_ThirdPartyConversationID' => rand(),
             'input_TransactionReference' => rand(),
             'input_PurchasedItemsDesc' => 'Test Two Item'
         ];

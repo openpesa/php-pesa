@@ -55,6 +55,7 @@ class PesaTest extends TestCase
             'api_key' => Fixture::$apiKey,
             'public_key' => Fixture::$publicKey,
             'client_options' => [],
+            'env' => 'sandbox'
         ]));
     }
 
@@ -63,7 +64,12 @@ class PesaTest extends TestCase
     {
         $this->assertClassHasAttribute('options', get_class($this->pesa));
         $this->assertClassHasAttribute('client', get_class($this->pesa));
+        $this->assertClassHasAttribute('api_url', get_class($this->pesa));
+        $this->assertClassHasAttribute('rsa', get_class($this->pesa));
+
     }
+
+
 
     /** @test
      * @throws GuzzleException
