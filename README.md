@@ -17,7 +17,7 @@ The **Pesa SDK for PHP** makes it easy for developers to access [OpenAPI](https:
 
 ## Documentation
 
-Take a look at the [API docs here](https://php-pesa.netlify.app/).
+Take a look at the [API docs here](https://openpesa.github.io/php-pesa/).
 
 ## Getting Started
 
@@ -25,7 +25,7 @@ Take a look at the [API docs here](https://php-pesa.netlify.app/).
    sign up for an account and retrieve your credentials.
 
 1. **Minimum requirements** – To run the SDK, your system will need to meet the
-   [minimum requirements](https://php-pesa.netlify.app/docs/requirements.html), including having **PHP >= 7.1**.
+   [minimum requirements](https://openpesa.github.io/php-pesa/guide/installation#system-requirements), including having **PHP >= 7.1**.
     <!-- We highly recommend having it compiled with the cURL extension and cURL
     7.16.2+ compiled with a TLS backend (e.g., NSS or OpenSSL). -->
 1. **Install the SDK** – Using [Composer] is the recommended way to install the
@@ -35,11 +35,11 @@ Take a look at the [API docs here](https://php-pesa.netlify.app/).
     composer require openpesa/pesa
     ```
     Please see the
-    [Installation section of the User Guide](https://php-pesa.netlify.app/docs/installation.html) for more
+    [Installation section of the User Guide](https://openpesa.github.io/php-pesa/guide/installation) for more
     detailed information about installing the SDK through Composer and other
     means.
 1. **Using the SDK** – The best way to become familiar with how to use the SDK
-   is to read the [User Guide](https://php-pesa.netlify.app/docs/guide.html).
+   is to read the [User Guide](https://openpesa.github.io/php-pesa/guide/quick_guide).
 
     <!-- The [Getting Started Guide](#) will help you become familiar with
     the basic concepts. -->
@@ -59,7 +59,7 @@ $pesa = new Pesa([
             'api_key' => 'YOUR_API_KEY',
             'public_key' => 'PUBLIC_KEY',
             'client_options' => [],
-        ]);
+        ],'sandbox');
 
 // Setup the transaction
 $data = [
