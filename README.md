@@ -1,9 +1,15 @@
-# Pesa SDK for PHP
+<p align="center">
+<img src="./art/Openpesa_PHP.png"/>
+</p>
+
+<br/>
+<h1 align="center">Pesa SDK for PHP</h1>
+<br/>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/openpesa/pesa.svg?style=flat-square&?include_prereleases)](https://packagist.org/packages/openpesa/pesa)
-
 ![Test](https://github.com/openpesa/php-pesa/workflows/Test/badge.svg)
 ![documentation](https://github.com/openpesa/php-pesa/workflows/documentation/badge.svg)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fopenpesa%2Fphp-pesa&count_bg=%2379C83D&title_bg=%23555555&icon=codeigniter.svg&icon_color=%23E7E7E7&title=hits&edge_flat=true)](https://hits.seeyoufarm.com)
 [![codecov.io](https://img.shields.io/codecov/c/github/openpesa/php-pesa/main?style=flat-square)](https://codecov.io/github/openpesa/php-pesa)
 [![Total Downloads](https://img.shields.io/packagist/dt/openpesa/pesa.svg?style=flat-square)](https://packagist.org/packages/openpesa/pesa)
 
