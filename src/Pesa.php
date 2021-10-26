@@ -5,7 +5,7 @@ namespace Openpesa\SDK;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use phpseclib\Crypt\RSA;
+use InvalidArgumentException;
 
 /**
  * @package Openpesa\SDK
@@ -23,11 +23,7 @@ class Pesa
      * @access private
      */
     private $client;
-    /**
-     * @var null|RSA
-     * @access private
-     */
-    private $rsa;
+
 
     /**
      * BASE DOMAIN
@@ -93,7 +89,6 @@ class Pesa
     ];
 
 
-
     /**
      * Pesa constructor.
      *
@@ -102,22 +97,20 @@ class Pesa
      * @param null $client
      * @param null $rsa
      */
-    public function __construct(array $options, $client = null, $rsa = null)
+    public function __construct(array $options, $client = null,)
     {
-        $options['client_options'] = $options['client_options'] ?? array();
+        if (!key_exists('api_key', $options)) throw new  InvalidArgumentException("api_key is required");
+        if (!key_exists('public_key', $options)) throw new  InvalidArgumentException("public_key is required");
+
+        $options['client_options'] = $options['client_options'] ?? [];
         $options['persistent_session'] = $options['persistent_session'] ?? false;
 
         $options['service_provider_code'] = $options['service_provider_code'] ?? null;
         $options['country'] = $options['country'] ?? null;
         $options['currency'] = $options['currency'] ?? null;
 
-        if ($options['api_key'] ?? null) throw new  Exception("api_key is required");
-        if ($options['public_key'] ?? null) throw new  Exception("public_key is required");
-
         $this->options = $options;
         $this->client = $this->makeClient($options, $client);
-
-        $this->rsa = ($rsa instanceof RSA) ? $rsa : new RSA();
     }
 
     private function makeClient($options, $client = null): Client
@@ -151,9 +144,13 @@ class Pesa
      */
     private function encryptKey($key): string
     {
-        $this->rsa->loadKey($this->options['public_key']);
-        $this->rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
-        return base64_encode($this->rsa->encrypt($key));
+        $publicKey = openssl_pkey_get_public("-----BEGIN PUBLIC KEY-----\n" . $this->options['public_key'] . "\n-----END PUBLIC KEY-----");
+        if ($publicKey === false) {
+            throw new Exception("Invalid public key");
+        }
+
+        openssl_public_encrypt($key, $encrypted, $publicKey, OPENSSL_PKCS1_OAEP_PADDING);
+        return base64_encode($encrypted);
     }
 
     /**
