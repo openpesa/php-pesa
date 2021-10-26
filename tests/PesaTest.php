@@ -88,7 +88,6 @@ class PesaTest extends TestCase
     {
         $this->assertClassHasAttribute('options', get_class($this->pesa));
         $this->assertClassHasAttribute('client', get_class($this->pesa));
-        $this->assertClassHasAttribute('rsa', get_class($this->pesa));
     }
 
 
