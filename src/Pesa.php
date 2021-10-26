@@ -111,6 +111,9 @@ class Pesa
         $options['country'] = $options['country'] ?? null;
         $options['currency'] = $options['currency'] ?? null;
 
+        if ($options['api_key'] ?? null) throw new  Exception("api_key is required");
+        if ($options['public_key'] ?? null) throw new  Exception("public_key is required");
+
         $this->options = $options;
         $this->client = $this->makeClient($options, $client);
 
