@@ -1,8 +1,4 @@
-<p align="center">
-<img src="./art/Openpesa_PHP.png"/>
-</p>
-
-<br/>
+<p align="center"><img src="./art/Openpesa_PHP.png"/></p>
 <h1 align="center">Pesa SDK for PHP</h1>
 <br/>
 
@@ -26,8 +22,8 @@ Take a look at the [API docs here](https://openpesa.github.io/php-pesa/).
 
 1. **Minimum requirements** – To run the SDK, your system will need to meet the
    [minimum requirements](https://openpesa.github.io/php-pesa/guide/installation#system-requirements), including having **PHP >= 7.1**.
-    <!-- We highly recommend having it compiled with the cURL extension and cURL
-    7.16.2+ compiled with a TLS backend (e.g., NSS or OpenSSL). -->
+     <!-- We highly recommend having it compiled with the cURL extension and cURL
+     7.16.2+ compiled with a TLS backend (e.g., NSS or OpenSSL). -->
 1. **Install the SDK** – Using [Composer] is the recommended way to install the
    Pesa SDK for PHP. The SDK is available via [Packagist] under the
    [`openpesa/php-pesa`](https://packagist.org/packages/openpesa/pesa) package. If Composer is installed globally on your system, you can run the following in the base directory of your project to add the SDK as a dependency:
@@ -41,8 +37,8 @@ Take a look at the [API docs here](https://openpesa.github.io/php-pesa/).
 1. **Using the SDK** – The best way to become familiar with how to use the SDK
    is to read the [User Guide](https://openpesa.github.io/php-pesa/guide/quick_guide).
 
-    <!-- The [Getting Started Guide](#) will help you become familiar with
-    the basic concepts. -->
+     <!-- The [Getting Started Guide](#) will help you become familiar with
+     the basic concepts. -->
 
 ## Usage
 
@@ -92,6 +88,15 @@ composer test
 ## Opening Issues
 
 If you have a feature requrest or you encounter a bug, please file an issue on [our issue tracker on GitHub](https://github.com/openpesa/php-pesa/issues).
+
+## Resources
+
+* [User Guide](https://openpesa.github.io/php-pesa/) – For both getting started and in-depth SDK usage information
+* [API Docs](https://openapiportal.m-pesa.com/) – For details about operations, parameters, and responses
+* [Blog](https://openpesa.github.io/blog/) – Tips & tricks, articles, and announcements
+* [Sample Project](https://github.com/alphaolomi/laravel-pesa-demo) - A quick, sample project to help get you started
+* [Issues](https://github.com/openpesa/php-pesa/issues) – Report issues, submit pull requests, and get involved
+* [@openpesa](https://twitter.com/openpesa) – Follow us on Twitter
 
 ### Changelog
 

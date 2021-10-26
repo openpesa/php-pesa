@@ -18,8 +18,8 @@ $data = [
     'input_Country' => 'TZN',
     'input_Currency' => 'TZS',
     'input_ServiceProviderCode' => '000000',
-    'input_TransactionReference' => 'T12344Z',
-    'input_ThirdPartyConversationID' => '1e9b774d1da34af78412a498cbc28f5d',
+    'input_TransactionReference' => 'T12644Z',
+    'input_ThirdPartyConversationID' => '1g9b774d1da34af78412a498cbc28f5d',
     'input_PurchasedItemsDesc' => 'Test Three Item'
 ];
 
