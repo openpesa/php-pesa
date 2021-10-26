@@ -1,0 +1,41 @@
+---
+id: installation
+title: Installation
+---
+
+Pesa PHP SDK can be installed using [Composer package manager](#).
+
+## System Requirements
+
+### **Minimum requirements**
+
+To run the SDK, your system will need to have **[PHP](https://php.org/) version >= 7.1 or 8.0**.
+
+# Server Requirements
+
+PHP version 7.1 or newer is required, with the *curl* extension and *mbstring* extension installed.
+
+The following PHP extensions should be enabled on your server: `php-json`, `php-curl`
+
+In order to use the CURLRequest, you will need `libcurl` installed.
+
+
+### Installing to an Existing Project
+
+The Pesa PHP SDK can be an existing project using Composer.
+
+In your project root:
+
+```sh
+composer require openpesa/pesa
+```
+
+### Upgrading
+
+Whenever there is a new release, then from the command line in your project root:
+
+```sh
+composer upgrade
+```
+
+Read the upgrade instructions, and check designated files for affected changes.
