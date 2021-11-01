@@ -58,5 +58,13 @@ class Pesa
         }
 
 
+        /**
+         * @param mixed $options
+         * get response in same json format
+         * @return json
+         */
+        public function ProcessResponse($options){
+            // TO DO
 
+        }
 }
