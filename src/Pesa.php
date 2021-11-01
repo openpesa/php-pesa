@@ -36,6 +36,12 @@ class Pesa
         }
 
 
+        /**
+         * @param mixed $options
+         * @param null $client
+         *
+         * @return Client
+         */
         private function makeClient($options, $client = null): Client
         {
             $configs = include('config.php');
