@@ -28,7 +28,7 @@ return [
                     ]
             ],
             "refund"=>[
-                "name"=>"Refund from account to payee",
+                "name"=>"Business 2 payee",
                 "url"=>"/merchant/v1/payments/",
                 'requred_param'=>[
 
@@ -64,13 +64,13 @@ return [
                         ]
                 ],
                 "refund"=>[
-                    "name"=>"Refund from account to payee",
+                    "name"=>"Business 2 payee",
                     "url"=>"/merchant/v1/payments/",
                     'requred_param'=>[
 
                         ]
                 ],
-                "status"=>[
+                "query"=>[
                     "name"=>"Transaction status",
                     "url"=>"/standard/v1/payments/",  //replace id with transaction id
                     'requred_param'=>[
