@@ -1,6 +1,7 @@
 <?php
 
 
+
 return [
 
     "airtelmoney"=>[
@@ -11,11 +12,72 @@ return [
             "grant_type"=>""
         ],
 
+        "transact_type"=>[
+            "collection"=>[
+                'name' => 'Collection C2B',
+                'url' => "/merchant/v1/payments/",
+                'requred_param'=>[
+
+                ]
+            ],
+            "desbusement"=>[
+                "name"=>"Desbusement",
+                "url" => "/standard/v1/disbursements/",
+                'requred_param'=>[
+
+                    ]
+            ],
+            "refund"=>[
+                "name"=>"Refund from account to payee",
+                "url"=>"/merchant/v1/payments/",
+                'requred_param'=>[
+
+                    ]
+            ],
+            "status"=>[
+                "name"=>"Transaction status",
+                "url"=>"/standard/v1/payments/",  //replace id with transaction id
+                'requred_param'=>[
+
+                    ]
+            ]
+        ],
+
         "sandbox"=>[
             "BASE_DOMAIN"=>"https://openapiuat.airtel.africa",
             "client_id"=>"",
             "client_secret"=>"",
-            "grant_type"=>""
+            "grant_type"=>"",
+            "transact_type"=>[
+                "collection"=>[
+                    'name' => 'Collection C2B',
+                    'url' => "/merchant/v1/payments/",
+                    'requred_param'=>[
+
+                    ]
+                ],
+                "desbusement"=>[
+                    "name"=>"Desbusement",
+                    "url" => "/standard/v1/disbursements/",
+                    'requred_param'=>[
+
+                        ]
+                ],
+                "refund"=>[
+                    "name"=>"Refund from account to payee",
+                    "url"=>"/merchant/v1/payments/",
+                    'requred_param'=>[
+
+                        ]
+                ],
+                "status"=>[
+                    "name"=>"Transaction status",
+                    "url"=>"/standard/v1/payments/",  //replace id with transaction id
+                    'requred_param'=>[
+
+                        ]
+                ]
+            ],
         ],
 
 

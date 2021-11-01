@@ -73,4 +73,11 @@ class Pesa
             // TO DO
 
         }
+
+
+        public function ProcessRequredParam($options):bool
+        {
+            if(empty($options)) return false;
+
+        }
 }
