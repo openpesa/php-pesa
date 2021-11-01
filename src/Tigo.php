@@ -10,7 +10,7 @@ use InvalidArgumentException;
 /**
  * @package Openpesa\SDK
  */
-class Airtel
+class Tigo
 {
 
 

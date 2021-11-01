@@ -43,31 +43,20 @@ class Pesa
             if($this->gateway==="tigopesa"){
 
                 $tigopesa = new Mpesa($this->options, $this->client);
-                return $this->ProcessResponse($tigopesa);
+                return  $tigopesa;
             }
             else if($this->gateway==="mpesa"){
                 $mpesa = new Mpesa($this->options, $this->client);
 
-                return $this->ProcessResponse($mpesa);
+                return $mpesa;
             }
             if($this->gateway==="airtelmoney"){
                 $airtelmoney = new Mpesa($this->options, $this->client);
 
-                return $this->ProcessResponse($airtelmoney);
+                return $airtelmoney ;
             }
         }
 
 
-        public function ProcessResponse($options){
-            return ($client instanceof Client)
-                ? $client
-                : new Client(array_merge([
-                    'http_errors' => false,
-                    'base_uri' => $apiUrl,
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Origin' => '*'
-                    ]
-                ], $options['client_options']));
-        }
+
 }
