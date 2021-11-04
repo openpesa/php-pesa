@@ -9,10 +9,8 @@ return [
             "BASE_DOMAIN"=>"https://openapi.airtel.africa",
             "client_id"=>"",
             "client_secret"=>"",
-            "grant_type"=>""
-        ],
-
-        "transact_type"=>[
+            "grant_type"=>"",
+           "transact_type"=>[
             "collection"=>[
                 'name' => 'Collection C2B',
                 'url' => "/merchant/v1/payments/",
@@ -41,6 +39,7 @@ return [
 
                     ]
             ]
+        ],
         ],
 
         "sandbox"=>[
