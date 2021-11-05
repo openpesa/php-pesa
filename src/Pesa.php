@@ -42,6 +42,7 @@ class Pesa
          *
          * @return Client
          */
+
         private function makeClient($options, $client = null): Client
         {
             $configs = include('config.php');

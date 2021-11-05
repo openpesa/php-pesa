@@ -24,12 +24,19 @@ class Mpesa
      */
     private $client;
 
+    private $config = include("Config.php")['mpesa'];
+
+
+
+
 
     /**
      * BASE DOMAIN
      * @const string
      */
-    const BASE_DOMAIN = "https://openapi.m-pesa.com";
+
+    const BASE_DOMAIN =  $config['live']['BASE_DOMAIN'];
+    const SAND_BOX_DOMAIN = $config['sandbox']['BASE_DOMAIN'];
 
     /**
      * @access private
@@ -42,51 +49,7 @@ class Mpesa
      *
      * @var array
      */
-    const TRANSACT_TYPE = [
-        'c2b' => [
-            'name' => 'Consumer 2 Business',
-            'url' => "c2bPayment/singleStage/",
-            'encryptSessionKey' => true,
-            'rules' => []
-        ],
-        'b2c' => [
-            'name' => 'Business 2 Consumer',
-            'url' => "b2cPayment/singleStage/",
-            'encryptSessionKey' => true,
-            'rules' => []
-        ],
-
-        'b2b' => [
-            'name' => 'Business 2 Business',
-            'url' => "b2bPayment/",
-            'encryptSessionKey' => true,
-            'rules' => []
-        ],
-        'rt' => [
-            'name' => 'Reverse Transaction',
-            'url' => "reversal/",
-            'encryptSessionKey' => true,
-            'rules' => []
-        ],
-        'query' => [
-            'name' => 'Query Transaction Status',
-            'url' => "queryTransactionStatus/",
-            'encryptSessionKey' => true,
-            'rules' => []
-        ],
-        'ddc' => [
-            'name' => 'Direct Debits create',
-            'url' => "directDebitCreation/",
-            'encryptSessionKey' => true,
-            'rules' => []
-        ],
-        'ddp' => [
-            'name' => 'Direct Debits payment',
-            'url' => "directDebitPayment/",
-            'encryptSessionKey' => false,
-        ]
-
-    ];
+    const TRANSACT_TYPE = $config['mpesa']['transact_type'] ?? null;
 
 
     /**
@@ -97,10 +60,23 @@ class Mpesa
      * @param null $client
      * @param null $rsa
      */
+
     public function __construct(array $options, $client = null,)
     {
-        if (!key_exists('api_key', $options)) throw new  InvalidArgumentException("api_key is required");
-        if (!key_exists('public_key', $options)) throw new  InvalidArgumentException("public_key is required");
+        if(array_key_exists("env", $options)){
+            if($options['env'] == "sandbox"){
+                $api_key = $this->config['sandbox']['api_key'];
+                 $public_key = $this->config['sandbox']['public_key'];
+            }else{
+                $api_key = $this->config['live']['api_key'];
+                $public_key = $this->config['live']['public_key'];
+            }
+        }else{
+            throw new  InvalidArgumentException("env is required");
+        }
+
+        if (empty($api_key)) throw new  InvalidArgumentException("api_key is required");
+        if (empty($public_key)) throw new  InvalidArgumentException("public_key is required");
 
         $options['client_options'] = $options['client_options'] ?? [];
         $options['persistent_session'] = $options['persistent_session'] ?? false;
@@ -117,9 +93,9 @@ class Mpesa
     {
         $apiUrl = "";
         if (array_key_exists("env", $options)) {
-            $apiUrl = ($options['env'] === "sandbox") ? self::BASE_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
+            $apiUrl = ($options['env'] === "sandbox") ? self::SAND_BOX_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
         } else {
-            $apiUrl =  self::BASE_DOMAIN . "/sandbox";
+            $apiUrl =  self::SAND_BOX_DOMAIN . "/sandbox";
         }
         $apiUrl .= "/ipg/v2/vodacomTZN/";
 
