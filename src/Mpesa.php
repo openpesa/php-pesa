@@ -25,6 +25,7 @@ class Mpesa
     private $client;
 
     private $config = include("Config.php")['mpesa'];
+    private $apiUrl ;
 
 
 
@@ -67,9 +68,11 @@ class Mpesa
             if($options['env'] == "sandbox"){
                 $api_key = $this->config['sandbox']['api_key'];
                  $public_key = $this->config['sandbox']['public_key'];
+                 $this->apiUrl = self::SAND_BOX_DOMAIN;
             }else{
                 $api_key = $this->config['live']['api_key'];
                 $public_key = $this->config['live']['public_key'];
+                $this->apiUrl = self::BASE_DOMAIN;
             }
         }else{
             throw new  InvalidArgumentException("env is required");
@@ -91,12 +94,8 @@ class Mpesa
 
     private function makeClient($options, $client = null): Client
     {
-        $apiUrl = "";
-        if (array_key_exists("env", $options)) {
-            $apiUrl = ($options['env'] === "sandbox") ? self::SAND_BOX_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
-        } else {
-            $apiUrl =  self::SAND_BOX_DOMAIN . "/sandbox";
-        }
+        $apiUrl = $this->apiUrl;
+
         $apiUrl .= "/ipg/v2/vodacomTZN/";
 
 
