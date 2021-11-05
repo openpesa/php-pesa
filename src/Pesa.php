@@ -81,4 +81,9 @@ class Pesa
             if(empty($options)) return false;
 
         }
+
+        public function checkTransactionStatus($transaction_id,$gateway){
+            // TO DO
+
+        }
 }
