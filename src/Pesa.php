@@ -97,7 +97,7 @@ class Pesa
      * @param null $client
      * @param null $rsa
      */
-    public function __construct(array $options, $client = null,)
+    public function __construct(array $options, $client = null)
     {
         if (!key_exists('api_key', $options)) throw new  InvalidArgumentException("api_key is required");
         if (!key_exists('public_key', $options)) throw new  InvalidArgumentException("public_key is required");
