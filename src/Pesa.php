@@ -6,6 +6,8 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
+use APIRequest;
+use Openpesa\SDK\APIRequest as SDKAPIRequest;
 
 /**
  * @package Openpesa\SDK
@@ -113,6 +115,8 @@ class Pesa
         $this->client = $this->makeClient($options, $client);
     }
 
+
+
     private function makeClient($options, $client = null): Client
     {
         $apiUrl = "";
@@ -122,6 +126,8 @@ class Pesa
             $apiUrl =  self::BASE_DOMAIN . "/sandbox";
         }
         $apiUrl .= "/ipg/v2/vodacomTZN/";
+
+        // return $apiUrl;
 
 
         return ($client instanceof Client)
@@ -144,13 +150,24 @@ class Pesa
      */
     private function encryptKey($key): string
     {
-        $publicKey = openssl_pkey_get_public("-----BEGIN PUBLIC KEY-----\n" . $this->options['public_key'] . "\n-----END PUBLIC KEY-----");
-        if ($publicKey === false) {
-            throw new Exception("Invalid public key");
-        }
+            // Public key on the API listener used to encrypt keys
+            $public_key = $this->options['public_key'];
 
-        openssl_public_encrypt($key, $encrypted, $publicKey, OPENSSL_PKCS1_OAEP_PADDING);
-        return base64_encode($encrypted);
+            // Create Context with API to request a Session ID
+            $context = new APIContext();
+            // Api key
+            $context->set_api_key($key);
+            // Public key
+            $context->set_public_key($public_key);
+
+            // Create a request object
+            $request = new SDKAPIRequest($context);
+
+            // Generate BearerToken
+            $token = $request->create_bearer_token();
+
+            return $token;
+
     }
 
     /**
@@ -166,6 +183,7 @@ class Pesa
             'getSession/',
             ['headers' => ['Authorization' => "Bearer {$this->encryptKey($this->options['api_key'])}"]]
         );
+
         return json_decode($response->getBody(), true);
     }
 
@@ -248,16 +266,16 @@ class Pesa
     {
 
         $sessionToken = $this->getSessionToken($session);
-
         $transData = $this->makeRequestData($data);
 
         $token = $this->encryptKey($sessionToken);
+
 
         $response = $this->client->post(self::TRANSACT_TYPE['c2b']['url'], [
             'json' => $transData,
             'headers' => ['Authorization' => "Bearer {$token}"]
         ]);
-        return json_decode($response->getBody(), true);
+         return json_decode($response->getBody(), true);
     }
 
 
