@@ -3,8 +3,7 @@
     "description": "Simple SDK usage",
     "type": "project",
     "require": {
-        "php": ">=7.1",
-        "openpesa/pesa": "dev-develop"
+        "openpesa/pesa": "^0.0.7"
     },
     "license": "MIT",
     "authors": [
