@@ -1,5 +1,5 @@
 {
-    "name": "pro-cms/pesa",
+    "name": "openpesa/pesa",
     "description": "Pesa PHP SDK",
     "keywords": [
         "api",
