@@ -6,14 +6,15 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
-use APIRequest;
-use Openpesa\SDK\APIRequest as SDKAPIRequest;
+use phpseclib3\Crypt\PublicKeyLoader;
 
 /**
  * @package Openpesa\SDK
  */
 class Pesa
 {
+    /** SDK version */
+    const VERSION = '0.0.9';
 
     /**
      * @var array
@@ -25,7 +26,6 @@ class Pesa
      * @access private
      */
     private $client;
-
 
     /**
      * BASE DOMAIN
@@ -116,8 +116,29 @@ class Pesa
     }
 
 
+    public function setPublicKey(string $publicKey)
+    {
+        $this->options['public_key'] = $publicKey;
+    }
 
-    private function makeClient($options, $client = null): Client
+
+    public function setApiKey(string $apiKey)
+    {
+        $this->options['api_key'] = $apiKey;
+    }
+
+    public function setSessionToken($sessionToken)
+    {
+        $this->sessionToken = $sessionToken;
+    }
+
+
+    /**
+     * @param $options
+     * @param null $client
+     * @return Client
+     */
+    private function makeClient(array $options, $client = null): Client
     {
         $apiUrl = "";
         if (array_key_exists("env", $options)) {
@@ -126,9 +147,6 @@ class Pesa
             $apiUrl =  self::BASE_DOMAIN . "/sandbox";
         }
         $apiUrl .= "/ipg/v2/vodacomTZN/";
-
-        // return $apiUrl;
-
 
         return ($client instanceof Client)
             ? $client
@@ -141,37 +159,27 @@ class Pesa
                 ]
             ], $options['client_options']));
     }
+
     /**
-     * Encrypts public key
+     * Encrypts data with public key
+     *
+     *-  Generate an instance of an RSA cipher and use the Base 64 string as the input
+     * - Encode the API Key with the RSA cipher and digest as Base64 string format
+     * - The result is your encrypted API Key.
      *
      * @internal
      * @param $key
      * @return string
      */
-    private function encryptKey($key): string
+    public function encryptKey($key): string
     {
-            // Public key on the API listener used to encrypt keys
-            $public_key = $this->options['public_key'];
-
-            // Create Context with API to request a Session ID
-            $context = new APIContext();
-            // Api key
-            $context->set_api_key($key);
-            // Public key
-            $context->set_public_key($public_key);
-
-            // Create a request object
-            $request = new SDKAPIRequest($context);
-
-            // Generate BearerToken
-            $token = $request->create_bearer_token();
-
-            return $token;
-
+        $pKey = PublicKeyLoader::load($this->options['public_key']);
+        openssl_public_encrypt($key, $encrypted, $pKey);
+        return base64_encode($encrypted);
     }
 
     /**
-     * Get Session Key
+     * Get Session Key from API
      *
      * @api
      * @return mixed
@@ -189,7 +197,11 @@ class Pesa
 
     /**
      * Get Session Token
-     * @return mixed
+     * When using persistent session, you can use this method
+     * to get the session token. If you don't have a persistent session,
+     * you can use getSession() method to get the session token from API
+     *
+     * @return string
      * @throws GuzzleException
      * @throws Exception
      * @api
@@ -214,7 +226,8 @@ class Pesa
     }
 
     /**
-     * Make Request Data
+     * Build a Request Data
+     *
      * @internal
      * @param $data mixed
      * @return mixed
@@ -230,7 +243,8 @@ class Pesa
     }
 
     /**
-     * The Query Transaction Status API call is used to query the status of the transaction that has been initiated.
+     * The Query Transaction Status API call is used to query the
+     * status of the transaction that has been initiated.
      *
      * @api
      * @param $data mixed
@@ -252,9 +266,14 @@ class Pesa
     }
 
     /**
-     * customer to business (C2B)
+     * Customer to Business (C2B)
      *
-     * The C2B API call is used as a standard customer-to-business transaction. Funds from the customer’s mobile money wallet will be deducted and be transferred to the mobile money wallet of the business. To authenticate and authorize this transaction, M-Pesa Payments Gateway will initiate a USSD Push message to the customer to gather and verify the mobile money PIN number. This number is not stored and is used only to authorize the transaction.
+     * The C2B API call is used as a standard customer-to-business transaction.
+     * Funds from the customer’s mobile money wallet will be deducted and be
+     * transferred to the mobile money wallet of the business. To authenticate and
+     * authorize this transaction, M-Pesa Payments Gateway will initiate
+     * a USSD Push message to the customer to gather and verify the mobile money PIN number.
+     * This number is not stored and is used only to authorize the transaction.
      *
      * @param $data mixed
      * @param $session null|string
@@ -270,19 +289,21 @@ class Pesa
 
         $token = $this->encryptKey($sessionToken);
 
-
         $response = $this->client->post(self::TRANSACT_TYPE['c2b']['url'], [
             'json' => $transData,
             'headers' => ['Authorization' => "Bearer {$token}"]
         ]);
-         return json_decode($response->getBody(), true);
+        return json_decode($response->getBody(), true);
     }
 
 
     /**
      * Business to Customer (B2C)
      *
-     * The B2C API Call is used as a standard business-to-customer funds disbursement. Funds from the business account’s wallet will be deducted and paid to the mobile money wallet of the customer. Use cases for the B2C includes:
+     * The B2C API Call is used as a standard business-to-customer
+     *  funds disbursement. Funds from the business account’s wallet
+     *  will be deducted and paid to the mobile money wallet of the customer.
+     *  Use cases for the B2C includes:
      *  -    Salary payments
      *  -    Funds transfers from business
      *  -    Charity pay-out
@@ -343,7 +364,11 @@ class Pesa
     /**
      * Payment reversals
      *
-     * The Reversal API is used to reverse a successful transaction. Using the Transaction ID of a previously successful transaction,  the OpenAPI will withdraw the funds from the recipient party’s mobile money wallet and revert the funds to the mobile money wallet of the initiating party of the original transaction.
+     * The Reversal API is used to reverse a successful transaction.
+     * Using the Transaction ID of a previously successful transaction,
+     * the OpenAPI will withdraw the funds from the recipient
+     * party’s mobile money wallet and revert the funds to the mobile money
+     *  wallet of the initiating party of the original transaction.
      *
      * @param $data mixed
      * @param $session null|string
@@ -373,11 +398,21 @@ class Pesa
      * Direct Debit Create Mandate
      *
      *
-     * Direct Debits are payments in M-Pesa that are initiated by the Payee alone without any Payer interaction, but permission must first be granted by the Payer. The granted permission from the Payer to Payee is commonly termed a ‘Mandate’, and M-Pesa must hold details of this Mandate.
-     * The Direct Debit API set allows an organisation to get the initial consent of their customers to create the Mandate that allows the organisation to debit customer's account at an agreed frequency and amount for services rendered. After the initial consent, the debit of the account will not involve any customer interaction. The Direct Debit feature makes use of the following API calls:
-     * •    Create a Direct Debit mandate
-     * •    Pay a mandate
-     * The customer is able to view and cancel the Direct Debit mandate from G2 menu accessible via USSD menu or the Smartphone Application.
+     * Direct Debits are payments in M-Pesa that are initiated by
+     * the Payee alone without any Payer interaction, but permission must
+     * first be granted by the Payer. The granted permission from the Payer
+     * to Payee is commonly termed a 'Mandate', and M-Pesa must hold
+     * details of this Mandate. The Direct Debit API set allows an
+     * organization to get the initial consent of their customers to create
+     * the Mandate that allows the organization to debit customer's account
+     * at an agreed frequency and amount for services rendered. After the
+     * initial consent, the debit of the account will not involve any customer
+     * interaction. The Direct Debit feature makes use of the following API calls:
+     * -    Create a Direct Debit mandate
+     * -    Pay a mandate
+     * The customer is able to view and cancel the Direct Debit mandate from
+     * G2 menu accessible via USSD menu or the Smartphone Application.
+     *
      * @param $data mixed
      * @param $session null|string
      * @return mixed
@@ -403,11 +438,21 @@ class Pesa
     /**
      * Direct Debit Payment
      *
-     * Direct Debits are payments in M-Pesa that are initiated by the Payee alone without any Payer interaction, but permission must first be granted by the Payer. The granted permission from the Payer to Payee is commonly termed a ‘Mandate’, and M-Pesa must hold details of this Mandate.
-     * The Direct Debit API set allows an organisation to get the initial consent of their customers to create the Mandate that allows the organisation to debit customer's account at an agreed frequency and amount for services rendered. After the initial consent, the debit of the account will not involve any customer interaction. The Direct Debit feature makes use of the following API calls:
+     * Direct Debits are payments in M-Pesa that are initiated by
+     * the Payee alone without any Payer interaction, but permission
+     * must first be granted by the Payer. The granted permission
+     * from the Payer to Payee is commonly termed a ‘Mandate’, and
+     * M-Pesa must hold details of this Mandate.
+     * The Direct Debit API set allows an organization to get the initial
+     * consent of their customers to create the Mandate that allows
+     * the organization to debit customer's account at an agreed frequency
+     * and amount for services rendered. After the initial consent,
+     * the debit of the account will not involve any customer interaction.
+     * The Direct Debit feature makes use of the following API calls:
      * •    Create a Direct Debit mandate
      * •    Pay a mandate
-     * The customer is able to view and cancel the Direct Debit mandate from G2 menu accessible via USSD menu or the Smartphone Application.
+     * The customer is able to view and cancel the Direct Debit mandate
+     * from G2 menu accessible via USSD menu or the Smartphone Application.
      *
      * @param $data mixed
      * @param $session null|string
