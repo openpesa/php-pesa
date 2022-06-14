@@ -178,8 +178,15 @@ class Pesa
      */
     public function encryptKey($key): string
     {
-        $pKey = openssl_pkey_get_public('-----BEGIN PUBLIC KEY-----' . $this->options['public_key'] . '-----END PUBLIC KEY-----');
-        openssl_public_encrypt($key, $encrypted, $pKey);
+        $pKey = false;
+        $pKey = openssl_pkey_get_public("-----BEGIN PUBLIC KEY-----\n" . $this->options['public_key'] . "\n-----END PUBLIC KEY-----");
+
+        if ($pKey === false) {
+            throw new Exception("Public key is invalid. Please check your public key");
+        }
+        if (!openssl_public_encrypt($key, $encrypted, $pKey)) {
+            throw new Exception("Public key encryption failed.  Please ensure that the public key is valid");
+        }
         return base64_encode($encrypted);
     }
 
