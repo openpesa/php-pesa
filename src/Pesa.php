@@ -6,7 +6,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
-use phpseclib3\Crypt\PublicKeyLoader;
+
 
 /**
  * @package Openpesa\SDK
@@ -132,6 +132,17 @@ class Pesa
         $this->sessionToken = $sessionToken;
     }
 
+    public function getApiUrl($options){
+        $apiUrl = "";
+        if (array_key_exists("env", $options)) {
+            $apiUrl = ($options['env'] === "sandbox") ? self::BASE_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
+        } else {
+            $apiUrl =  self::BASE_DOMAIN . "/sandbox";
+        }
+        $apiUrl .= "/ipg/v2/vodacomTZN/";
+        return $apiUrl;
+    }
+
 
     /**
      * @param $options
@@ -140,13 +151,7 @@ class Pesa
      */
     private function makeClient(array $options, $client = null): Client
     {
-        $apiUrl = "";
-        if (array_key_exists("env", $options)) {
-            $apiUrl = ($options['env'] === "sandbox") ? self::BASE_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
-        } else {
-            $apiUrl =  self::BASE_DOMAIN . "/sandbox";
-        }
-        $apiUrl .= "/ipg/v2/vodacomTZN/";
+        $apiUrl = $this->getApiUrl($options);
 
         return ($client instanceof Client)
             ? $client
@@ -173,7 +178,7 @@ class Pesa
      */
     public function encryptKey($key): string
     {
-        $pKey = PublicKeyLoader::load($this->options['public_key']);
+        $pKey = openssl_pkey_get_public('-----BEGIN PUBLIC KEY-----' . $this->options['public_key'] . '-----END PUBLIC KEY-----');
         openssl_public_encrypt($key, $encrypted, $pKey);
         return base64_encode($encrypted);
     }

@@ -17,17 +17,17 @@ class Tigopesa
     public const PAYMENT_AUTHORIZATION_ENDPOINT = "/v1/tigo/payment-auth/authorize";
 
     private $optionsKeys = [
-'clientId',
-'secret',
-'baseUrl',
-'pin',
-'accountNumber',
-'accountId',
-'appUrl',
-'redirectUrl',
-'callbackUrl',
-'currencyCode',
-'lang',
+        'clientId',
+        'secret',
+        'baseUrl',
+        'pin',
+        'accountNumber',
+        'accountId',
+        'appUrl',
+        'redirectUrl',
+        'callbackUrl',
+        'currencyCode',
+        'lang',
     ];
 
 
@@ -35,7 +35,7 @@ class Tigopesa
     private $options;
     private $client;
 
-    public function __construct($options , $client)
+    public function __construct($options, $client)
     {
         foreach ($this->optionsKeys as $key) {
             if (!array_key_exists($key, $options)) {
@@ -44,7 +44,6 @@ class Tigopesa
         }
         $this->options = $options;
         $this->client = $client ?: new Client();
-
     }
 
     public function getClient()
@@ -90,7 +89,8 @@ class Tigopesa
      *
      * @return string
      */
-    public function generateRandomString($prefix = 'TIGOPESA', $length = 15){
+    public function generateRandomString($prefix = 'TIGOPESA', $length = 15)
+    {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -175,7 +175,6 @@ class Tigopesa
      * @return mixed
      *
      */
-
     public function makePaymentRequest($issuedToken, $amount, $referenceId, $customerFirstName, $customerLastName, $customerEmail)
     {
 
@@ -193,6 +192,9 @@ class Tigopesa
         return $response->getBody();
     }
 
+    /**
+     *
+     */
     public function c2b($data)
     {
 
