@@ -3,7 +3,7 @@
     "description": "Simple SDK usage",
     "type": "project",
     "require": {
-        "openpesa/pesa": "^0.0.7"
+        "openpesa/pesa": "dev-multi-venfor"
     },
     "license": "MIT",
     "authors": [
