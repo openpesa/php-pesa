@@ -6,12 +6,12 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
-
+use phpseclib3\Crypt\PublicKeyLoader;
 
 /**
  * @package Openpesa\SDK
  */
-class Pesa
+class Mpesa
 {
     /** SDK version */
     const VERSION = '0.0.9';
@@ -132,17 +132,6 @@ class Pesa
         $this->sessionToken = $sessionToken;
     }
 
-    public function getApiUrl($options){
-        $apiUrl = "";
-        if (array_key_exists("env", $options)) {
-            $apiUrl = ($options['env'] === "sandbox") ? self::BASE_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
-        } else {
-            $apiUrl =  self::BASE_DOMAIN . "/sandbox";
-        }
-        $apiUrl .= "/ipg/v2/vodacomTZN/";
-        return $apiUrl;
-    }
-
 
     /**
      * @param $options
@@ -151,7 +140,13 @@ class Pesa
      */
     private function makeClient(array $options, $client = null): Client
     {
-        $apiUrl = $this->getApiUrl($options);
+        $apiUrl = "";
+        if (array_key_exists("env", $options)) {
+            $apiUrl = ($options['env'] === "sandbox") ? self::BASE_DOMAIN . "/sandbox" : self::BASE_DOMAIN . "/openapi";
+        } else {
+            $apiUrl =  self::BASE_DOMAIN . "/sandbox";
+        }
+        $apiUrl .= "/ipg/v2/vodacomTZN/";
 
         return ($client instanceof Client)
             ? $client
@@ -178,15 +173,8 @@ class Pesa
      */
     public function encryptKey($key): string
     {
-        $pKey = false;
-        $pKey = openssl_pkey_get_public("-----BEGIN PUBLIC KEY-----\n" . $this->options['public_key'] . "\n-----END PUBLIC KEY-----");
-
-        if ($pKey === false) {
-            throw new Exception("Public key is invalid. Please check your public key");
-        }
-        if (!openssl_public_encrypt($key, $encrypted, $pKey)) {
-            throw new Exception("Public key encryption failed.  Please ensure that the public key is valid");
-        }
+        $pKey = PublicKeyLoader::load($this->options['public_key']);
+        openssl_public_encrypt($key, $encrypted, $pKey);
         return base64_encode($encrypted);
     }
 
