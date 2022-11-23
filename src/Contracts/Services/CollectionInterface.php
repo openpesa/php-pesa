@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Openpesa\Sdk\Contracts\Services;
 
-interface CollectionInterface extends ServiceInterface
+interface CollectionInterface
 {
     public function request(array $data): array;
     public function status(array $data): array;

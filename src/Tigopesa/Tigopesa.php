@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use Openpesa\Sdk\Contracts\ProviderInterface;
 use Openpesa\Sdk\Tigopesa\Services\Collection;
 
-class Tigopesa implements ProviderInterface
+class Tigopesa
 {
 
     public  const ACCESS_TOKEN_ENDPOINT = "/v1/oauth/generate/accesstoken?grant_type=client_credentials";
@@ -48,7 +48,7 @@ class Tigopesa implements ProviderInterface
         return true;
     }
 
-    public function collection(): Collection
+    public function collection()
     {
         return new Collection($this->options, $this->client);
     }

@@ -8,7 +8,7 @@ use Openpesa\Sdk\AirtelMoney\Services;
 use Openpesa\Sdk\Client;
 use Openpesa\Sdk\Contracts\ProviderInterface;
 
-class AirtelMoney implements ProviderInterface
+class AirtelMoney
 {
     protected Configuration $configuration;
     protected Client $client;

@@ -4,6 +4,8 @@ namespace Openpesa\Sdk\Mpesa;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+
+
 class Mpesa
 {
 

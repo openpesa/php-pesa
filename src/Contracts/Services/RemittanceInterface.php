@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Openpesa\Sdk\Contracts\Services;
 
-interface RemittanceInterface extends ServiceInterface
+interface RemittanceInterface
 {
     public function send(array $data): array;
     public function status(array $data): array;
