@@ -3,8 +3,12 @@
     "description": "Pesa PHP SDK",
     "keywords": [
         "api",
-        "openpesa",
-        "pesa"
+        "mobile-money",
+        "tanzania",
+        "pesa",
+        "pesa-sdk",
+        "pesa-sdk-php",
+        "openpesa"
     ],
     "homepage": "https://github.com/openpesa/pesa",
     "license": "MIT",
@@ -22,14 +26,14 @@
         }
     ],
     "require": {
-        "php": "^7.1|^8.0",
-        "guzzlehttp/guzzle": "^6.0|^7.0",
-        "phpseclib/phpseclib": "^2.0",
+        "php": "^7.2|^8.0",
         "ext-json": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "guzzlehttp/guzzle": "^6.0|^7.4",
+        "phpseclib/phpseclib": "~3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0|^9.5"
+        "phpunit/phpunit": "^8.5|^9.5"
     },
     "autoload": {
         "psr-4": {

@@ -2,11 +2,11 @@
 
 namespace Openpesa\SDK\Tests;
 
-use GuzzleHttp\Client;
+
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
+
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Openpesa\SDK\Pesa;
@@ -19,27 +19,30 @@ class PesaTest extends TestCase
 {
     public function setup(): void
     {
-        // Create a mock and queue two responses.
+        // Create a mock and queue responses.
         $mock = new MockHandler([
-            new Response(200, ['X-Foo' => 'Bar'], json_encode([
+
+            // Session responses
+            new Response(200, [], json_encode([
                 'output_ResponseCode' => 'INS-0',
                 'output_ResponseDesc' => 'Request processed successfully',
                 'output_SessionID' => 1
             ])),
-            new Response(200, ['X-Foo' => 'Bar'], json_encode([
+
+            // Transactions responses
+            new Response(200, [], json_encode([
                 'output_ResponseCode' => 'INS-0',
                 'output_ResponseDesc' => 'Request processed successfully',
                 'output_TransactionID' => 2,
                 'output_ConversationID' => 'f1ddae567e6c45e580504764571dbe2f',
                 'output_ThirdPartyConversationID' => 'Narration',
             ])),
-            new Response(202, ['Content-Length' => 0]),
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+
         ]);
 
-        $handlerStack = HandlerStack::create($mock);
+        $handlerStack = \GuzzleHttp\HandlerStack::create($mock);
 
-        $client = new Client(['handler' => $handlerStack]);
+        $client = new \GuzzleHttp\Client(['handler' => $handlerStack, '' => Fixture::$apiUrl]);
 
         $this->pesa = new Pesa([
             'api_key' => Fixture::$apiKey,
@@ -48,15 +51,37 @@ class PesaTest extends TestCase
     }
 
     /** @test */
-    public function pesa_instantiable()
+    public function can_pesa_with_few_options_instantiable()
     {
         $this->assertInstanceOf(Pesa::class, $this->pesa);
         $this->assertInstanceOf(Pesa::class, new Pesa([
             'api_key' => Fixture::$apiKey,
             'public_key' => Fixture::$publicKey,
             'client_options' => [],
+            'env' => 'sandbox'
         ]));
     }
+
+    /** @test */
+    public function can_pesa_with_many_options_instantiable()
+    {
+
+        $this->assertInstanceOf(Pesa::class, new Pesa([
+            'api_key' => Fixture::$apiKey,
+            'public_key' => Fixture::$publicKey,
+
+            'persistent_session' =>  true,
+
+            'country' => Fixture::$country,
+            'currency' => Fixture::$currency,
+            'service_provider_code' => Fixture::$service_provider_code,
+
+            'client_options' => [],
+            'env' => 'sandbox'
+        ]));
+    }
+
+
 
     /** @test */
     public function pesa_has_these_attributes()
@@ -65,27 +90,44 @@ class PesaTest extends TestCase
         $this->assertClassHasAttribute('client', get_class($this->pesa));
     }
 
-    /** @test
+
+
+    /**
+     * @test
      * @throws GuzzleException
      */
     public function pesa_get_session()
     {
         // Arrange - Done in the set up method
         // Act
-        $response = $this->pesa->get_session();
+        $response = $this->pesa->getSession();
         // Assert
         $this->assertArrayHasKey('output_SessionID', $response);
         $this->assertEquals(1, $response['output_SessionID']);
     }
 
-    /** @test
+    /**
+     * @test
+     * @throws GuzzleException
+     */
+    public function pesa_get_session_token()
+    {
+        // Arrange - Done in the set up method
+        // Act
+        $token = $this->pesa->getSessionToken();
+        // Assert
+        $this->assertEquals(1, $token);
+    }
+
+    /**
+     * @test
      * @throws GuzzleException
      */
     public function pesa_transact_c2b()
     {
         // Arrange - Done in the set up method
-        $session = $this->pesa->get_session()['output_SessionID'];
-        $result = $this->pesa->c2b(Fixture::$data_c2b, $session);
+        $token = $this->pesa->getSessionToken();
+        $result = $this->pesa->c2b(Fixture::$data_c2b, $token);
         // Act
         // Assert
         $this->assertArrayHasKey('output_ResponseCode', $result);
@@ -101,7 +143,7 @@ class PesaTest extends TestCase
     public function pesa_transact_b2b()
     {
         // Arrange - Done in the set up method
-        $session = $this->pesa->get_session()['output_SessionID'];
+        $session = $this->pesa->getSessionToken();
         $result = $this->pesa->b2b(Fixture::$data_b2b, $session);
         // Act
         // Assert
@@ -117,7 +159,7 @@ class PesaTest extends TestCase
     public function pesa_transact_b2c()
     {
         // Arrange - Done in the set up method
-        $session = $this->pesa->get_session()['output_SessionID'];
+        $session = $this->pesa->getSessionToken();
         $result = $this->pesa->b2c(Fixture::$data_b2c, $session);
         // Act
         // Assert
@@ -133,7 +175,7 @@ class PesaTest extends TestCase
     public function pesa_transact_reversal()
     {
         // Arrange - Done in the set up method
-        $session = $this->pesa->get_session()['output_SessionID'];
+        $session = $this->pesa->getSessionToken();
         $result = $this->pesa->reverse(Fixture::$data_reversal, $session);
         // Act
         // Assert
@@ -149,7 +191,7 @@ class PesaTest extends TestCase
     public function pesa_query_status()
     {
         // Arrange - Done in the set up method
-        $session = $this->pesa->get_session()['output_SessionID'];
+        $session = $this->pesa->getSessionToken();
         $result = $this->pesa->query(Fixture::$data_query, $session);
         // Act
         // Assert
@@ -165,7 +207,7 @@ class PesaTest extends TestCase
     public function pesa_transact_ddc()
     {
         // Arrange - Done in the set up method
-        $session = $this->pesa->get_session()['output_SessionID'];
+        $session = $this->pesa->getSessionToken();
         $result = $this->pesa->debit_create(Fixture::$data_ddc, $session);
         // Act
         // Assert
@@ -181,7 +223,7 @@ class PesaTest extends TestCase
     public function pesa_transact_ddp()
     {
         // Arrange - Done in the set up method
-        $session = $this->pesa->get_session()['output_SessionID'];
+        $session = $this->pesa->getSessionToken();
         $result = $this->pesa->debit_payment(Fixture::$data_ddp, $session);
         // Act
         // Assert
